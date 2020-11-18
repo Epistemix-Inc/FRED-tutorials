@@ -1,0 +1,11 @@
+
+1. Show the effects of setting the initial vaccination rate to 10%, 20%
+   30%, and 40%.
+
+2. Show the effects of changing the vaccine_delay for 0, 30, 60, or 90
+   days.
+
+3. Show the effects of changing the vaccine effectiveness to 50% or
+   90%.
+
+

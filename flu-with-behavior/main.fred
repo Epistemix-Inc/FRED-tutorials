@@ -1,0 +1,16 @@
+#####################################################
+# Simple influenza model
+# Author: John Grefenstette
+# Date: 22 Jul 2019
+
+simulation {
+    locations = Jefferson_County_PA 
+    start_date = 2020-Jan-01
+    end_date = 2020-May-01
+    weekly_data = 1
+}
+
+include simpleflu.fred
+include stayhome.fred
+
+

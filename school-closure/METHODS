@@ -1,0 +1,51 @@
+########## COMPARE EFFECTS OF SCHOOL CLOSURE POLICIES
+
+########## NO CLOSURE
+
+fred_delete -f -k no_closure
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = NO_CLOSURE' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k no_closure -p main.fred -n 4 -m 2
+
+########## LOCAL CLOSURE
+
+fred_delete -f -k local
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k local -p main.fred -n 4 -m 2
+
+
+########## GLOBAL CLOSURE
+
+fred_delete -f -k global
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k global -p main.fred -n 4 -m 2
+
+########## Analysis
+
+fred_plot -o closed -t "Number of Schools Closed" \
+	  -k no_closure,no_closure,no_closure,local,global \
+	  -v SCHOOL.SpringBreak,SCHOOL.SummerBreak,SCHOOL.WinterBreak,SCHOOL.Close,SCHOOL.Close \
+	  -l Spring,Summer,Winter,Local,Global \
+	  --ylabel "Schools" -M --year --leg out --clean
+
+fred_plot -o tot -k no_closure,local,global \
+	  -v INF.totE,INF.totE,INF.totE \
+	  -l 'No Closure','Local Incidence','Global Incidence' \
+	  -n -s 100 -M --year --clean --leg bottom
+
+fred_plot -o inc -k no_closure,local,global \
+	  -v INF.newE,INF.newE,INF.newE \
+	  -l 'No Closure','Local Incidence','Global Incidence' \
+	  -n -s 100 -M --year --clean
+

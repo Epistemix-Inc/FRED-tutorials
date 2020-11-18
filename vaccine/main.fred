@@ -1,0 +1,32 @@
+#####################################################
+# Simple influenza model
+# Author: John Grefenstette
+# Date: 22 Jul 2019
+
+simulation {
+    locations = Jefferson_County_PA 
+    start_date = 2020-Jan-01
+    end_date = 2020-Dec-01
+}
+
+include simpleflu.fred
+include stayhome.fred
+include vaccine.fred
+
+variables {
+    global flu_delay
+    flu_delay = 90
+}
+
+condition INF {
+    meta_start_state = ImportDelay
+
+    state ImportDelay {
+        wait(24 * flu_delay)
+	next(Import)
+    }
+}
+
+include parameters.fred
+
+

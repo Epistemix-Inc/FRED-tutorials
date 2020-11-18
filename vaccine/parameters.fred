@@ -1,0 +1,3 @@
+parameters {
+    initial_vaccines = 0.3
+}

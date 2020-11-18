@@ -1,0 +1,16 @@
+# exclude temporary files
+**/OLD/
+**/OUT/
+**/*~
+
+# exclude movie, plot and pdf files
+**/*.mp4
+**/*.plt
+**/*.pdf
+
+# ignore file that start with period
+**/\.*
+
+# include the .gitignore file
+!.gitignore
+

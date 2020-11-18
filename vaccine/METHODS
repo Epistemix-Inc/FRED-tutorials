@@ -1,0 +1,31 @@
+
+fred_delete -f -k novaccine
+
+echo 'parameters {' > parameters.fred
+echo '    initial_vaccines = 0' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k novaccine -p main.fred -n 4 -m 2
+
+fred_delete -f -k vaccine
+
+echo 'parameters {' > parameters.fred
+echo '    initial_vaccines = 0.3' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k vaccine -p main.fred -n 4 -m 2
+
+fred_plot -o vaccine-inc -k novaccine,vaccine -v INF.newE,INF.newE \
+	  -t "Effect of Vaccine"  \
+	  -l NoVaccine,Vaccine --clean -M
+
+fred_plot -o vaccine-tot -k novaccine,vaccine -v INF.totE,INF.totE \
+	  -t "Effect of Vaccine"  \
+	  -l NoVaccine,Vaccine --clean -M
+
+
+
+
+
+
+

@@ -1,0 +1,94 @@
+
+place School {
+    has_administrator = 1
+}
+
+variables {
+    global NO_CLOSURE
+    NO_CLOSURE = 0
+    
+    global LOCAL_CLOSURE
+    LOCAL_CLOSURE = 1
+
+    global GLOBAL_CLOSURE
+    GLOBAL_CLOSURE = 2
+
+    global school_closure_policy
+    school_closure_policy = NO_CLOSURE
+    
+    global days_closed
+    days_closed = 28
+
+    global global_closure_trigger
+    global_closure_trigger = 1000
+
+    global local_closure_trigger
+    local_closure_trigger = 20
+}
+
+
+condition SCHOOL {
+    admin_start_state = Start
+
+    state Start {
+        if (admin(School)) then next(Check_Epidemic)
+        default(Excluded)
+    }
+
+    state Check_Epidemic {
+        wait(0)
+    	if (school_closure_policy == LOCAL_CLOSURE) then next(Check_Local_Epidemic)
+    	if (school_closure_policy == GLOBAL_CLOSURE) then next(Check_Global_Epidemic)
+        default(Check_Calendar)
+    }
+
+    state Check_Local_Epidemic {
+        wait(0)
+	if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
+        default(Check_Calendar)
+    }
+
+    state Check_Global_Epidemic {
+        wait(0)
+	if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
+        default(Check_Calendar)
+    }
+
+    state Check_Calendar {
+        wait(0)
+        if (date_range(Dec-20,Jan-02)) then next(WinterBreak) 
+        if (date_range(Mar-10,Mar-15)) then next(SpringBreak)
+        if (date_range(Jun-15,Aug-25)) then next(SummerBreak)
+        default(Open)
+    }
+
+    state Open {
+        wait(24)
+        default(Check_Epidemic)
+    }
+
+    state Close {
+        close(School)
+        wait(24*days_closed)
+        next(Check_Epidemic)
+    }
+
+    state WinterBreak {
+        close(School)
+        wait(until(Jan,03))
+        next(Check_Epidemic)
+    }
+
+    state SpringBreak {
+        close(School)
+        wait(until(Mar,16))
+        next(Check_Epidemic)
+    }
+
+    state SummerBreak {
+        close(School)
+        wait(until(Aug,26))
+        next(Check_Epidemic)
+    }
+}
+
