@@ -1,7 +1,7 @@
 
 1. Show the effects of setting the school closure triggers lower or higher.
 
-2. Show the effects of chasning the school closure duration.
+2. Show the effects of changing the school closure duration.
 
 3. Plot the number of students whose schools are closed.
 

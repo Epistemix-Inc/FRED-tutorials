@@ -1,3 +1,4 @@
+#!/bin/bash
 
 fred_delete -f -k novaccine
 

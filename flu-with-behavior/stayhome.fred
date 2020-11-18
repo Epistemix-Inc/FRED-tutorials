@@ -3,12 +3,6 @@ condition StayHome {
 
     state No {}
 
-    state Symptoms {
-        wait(0)
-        next(Yes) with prob(0.5)
-        default(No)
-    }
-
     state Yes {
         absent()
         present(Household)
@@ -19,11 +13,11 @@ condition StayHome {
 
 
 state INF.Is {
-    set_state(StayHome,No,Symptoms)
+    if (bernoulli(0.5)==1) then set_state(StayHome,Yes)
 }
 
 
 state INF.R {
-    set_state(StayHome,Yes,No)
+    set_state(StayHome,No)
 }
 
