@@ -18,7 +18,7 @@ variables {
     flu_delay = 90
 }
 
-condition INFLEUNZA {
+condition INFLUENZA {
     meta_start_state = ImportDelay
 
     state ImportDelay {
