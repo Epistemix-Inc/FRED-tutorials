@@ -16,11 +16,11 @@ echo '}' >> parameters.fred
 
 fred_job -k vaccine -p main.fred -n 4 -m 2
 
-fred_plot -o vaccine-inc -k novaccine,vaccine -v INF.newE,INF.newE \
+fred_plot -o vaccine-inc -k novaccine,vaccine -v INFLUENZA.newE,INFLUENZA.newE \
 	  -t "Effect of Vaccine"  \
 	  -l NoVaccine,Vaccine --clean -M
 
-fred_plot -o vaccine-tot -k novaccine,vaccine -v INF.totE,INF.totE \
+fred_plot -o vaccine-tot -k novaccine,vaccine -v INFFLUENZA.totE,INFLUENZA.totE \
 	  -t "Effect of Vaccine"  \
 	  -l NoVaccine,Vaccine --clean -M
 

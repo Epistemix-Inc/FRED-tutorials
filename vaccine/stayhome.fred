@@ -18,12 +18,12 @@ condition StayHome {
 }
 
 
-state INF.Is {
-    set_state(StayHome,No,Symptoms)
+state INFLUENZA.InfectiousSymptomatic {
+    set_state(StayHome,Symptoms)
 }
 
 
-state INF.R {
-    set_state(StayHome,Yes,No)
+state INFLUENZA.Recovered {
+    set_state(StayHome,No)
 }
 

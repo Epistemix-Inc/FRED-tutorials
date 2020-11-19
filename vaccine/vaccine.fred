@@ -17,7 +17,7 @@ variables {
 }
 
 
-condition VAX {
+condition INFLUENZA_VACCINE {
     meta_start_state = ImportStart
     transmission_mode = proximity
     exposed_state = Decide
@@ -28,25 +28,25 @@ condition VAX {
     }
 
     state Considering {
-        VAX.sus = 1
+        INFLUENZA_VACCINE.sus = 1
         wait()
         next()
     }
 
     state Decide {
-        VAX.sus = 0
+        INFLUENZA_VACCINE.sus = 0
         wait(24)
         next(Taker)
     }
 
     state Taker {
-        wait(24*days_until_effective)
+        wait(24 * days_until_effective)
         next(Immune) with prob(vaccine_effectiveness)
         default(Failed)
     }
 
     state Immune {
-        INF.sus = 0
+        INFLUENZA.sus = 0
         wait()
         next()
     }
