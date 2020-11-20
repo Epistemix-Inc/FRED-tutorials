@@ -3,39 +3,39 @@
 # Author: John Grefenstette
 # Date: 22 Jul 2019
 
-condition INF {
+condition INFLUENZA {
     transmission_mode = proximity
     transmissibility = 1.0
-    exposed_state = E
+    exposed_state = Exposed
     meta_start_state = Import
 
-    state S {
-        INF.sus = 1
+    state Susceptible {
+        INFLUENZA.sus = 1
         wait()
         next()
     }
 
-    state E {
-        INF.sus = 0
+    state Exposed {
+        INFLUENZA.sus = 0
         wait(24*lognormal(1.9,1.23))
-        next(Ia) with prob(0.33)
-        default(Is)
+        next(InfectiousAsymptomatic) with prob(0.33)
+        default(InfectiousSymptomatic)
     }
 
-    state Is {
-        INF.trans = 1
+    state InfectiousSymptomatic {
+        INFLUENZA.trans = 1
         wait(24* lognormal(5.0,1.5))
-        next(R)
+        next(Recovered)
     }
 
-    state Ia {
-        INF.trans = 0.5
+    state InfectiousAsymptomatic {
+        INFLUENZA.trans = 0.5
         wait( 24 * lognormal(5.0, 1.5) )
-        next(R)
+        next(Recovered)
     }
 
-    state R {
-        INF.trans = 0
+    state Recovered {
+        INFLUENZA.trans = 0
         wait()
         next()
     }

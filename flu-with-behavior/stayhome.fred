@@ -1,5 +1,5 @@
 
-condition StayHome {
+condition STAY_HOME {
 
     state No {}
 
@@ -12,12 +12,12 @@ condition StayHome {
 }
 
 
-state INF.Is {
-    if (bernoulli(0.5)==1) then set_state(StayHome,Yes)
+state INFLUENZA.InfectiousSymptomatic {
+    if (bernoulli(0.5)==1) then set_state(STAY_HOME,Yes)
 }
 
 
-state INF.R {
-    set_state(StayHome,No)
+state INFLUENZA.Recovered {
+    set_state(STAY_HOME,No)
 }
 
