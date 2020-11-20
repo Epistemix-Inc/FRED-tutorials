@@ -1,15 +1,20 @@
+#! /usr/bin/env bash
 
+fred_delete -f -k simpleflu
 fred_delete -f -k flu-with-behavior
 
+SIMPLE_FLU_MAIN=../simpleflu/main.fred
+if [ ! -f $SIMPLE_FLU_MAIN ]; then
+   echo "$SIMPLE_FLU_MAIN file is required to run simpleflu model for"\
+   "comparison with flu-with-behaviour model but could not be found."
+   echo "Exiting..."
+   exit 1
+fi
+
+fred_job -k simpleflu -p $SIMPLE_FLU_MAIN -n 4 -m 2
 fred_job -k flu-with-behavior -p main.fred -n 4 -m 2
 
-fred_plot -o flatten -k simpleflu,flu-with-behavior -v INF.newE,INF.newE \
+fred_plot -o flatten -k simpleflu,flu-with-behavior \
+	  -v INFLUENZA.newExposed,INFLUENZA.newExposed \
 	  -t "Flattening the Curve"  \
 	  -l NoDistancing,Distancing --clean
-
-
-
-
-
-
-
