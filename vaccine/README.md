@@ -3,6 +3,7 @@
 ## TODO
 
 - do `flu_delay` and the meta-agent assignments need to be made in `main.fred`?
+- Sample Model Outputs
 
 ## Introduction
 
@@ -171,19 +172,12 @@ The `METHODS` file in this directory defines two different FRED jobs by sequenti
 
 ## Sample Model Outputs
 
-### Running the model
-
 This model is run using the `METHODS` file.
 
-
 ## Summary
-
-### Additional language features introduced
 
 In addition to the features from previous tutorial modules, this model also includes:
 
 - A second, transmissible `condition` can alter the behavior of the original `condition` by directly changing susceptibility.
 - The use of ordered imports overwrites earlier parameter values.
 - An example of modifying parameters in successive simulations by rewriting `parameters.fred`.
-
-## Illustrative scientific/policy findings from model runs
