@@ -26,4 +26,3 @@ state INFLUENZA.InfectiousSymptomatic {
 state INFLUENZA.Recovered {
     set_state(STAY_HOME,No)
 }
-
