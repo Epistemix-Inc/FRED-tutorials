@@ -1,5 +1,5 @@
 
-condition StayHome {
+condition STAY_HOME {
 
     state No {}
 
@@ -19,11 +19,11 @@ condition StayHome {
 
 
 state INFLUENZA.InfectiousSymptomatic {
-    set_state(StayHome,Symptoms)
+    set_state(STAY_HOME,Symptoms)
 }
 
 
 state INFLUENZA.Recovered {
-    set_state(StayHome,No)
+    set_state(STAY_HOME,No)
 }
 
