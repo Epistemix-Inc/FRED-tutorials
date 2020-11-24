@@ -10,7 +10,8 @@ echo '}' >> parameters.fred
 
 fred_job -k no_closure -p main.fred -n 4 -m 2
 
-########## LOCAL CLOSURE
+######################################################################### LOCAL CLOSURE
+########## LOCAL CLOSURE, normal
 
 fred_delete -f -k local
 
@@ -20,8 +21,52 @@ echo '}' >> parameters.fred
 
 fred_job -k local -p main.fred -n 4 -m 2
 
+########## LOCAL CLOSURE, local_closure_trigger = 30
 
-########## GLOBAL CLOSURE
+fred_delete -f -k local_trigger_30
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
+echo '    local_closure_trigger = 30' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k local_trigger_30 -p main.fred -n 4 -m 2
+
+########## LOCAL CLOSURE, local_closure_trigger = 10
+
+fred_delete -f -k local_trigger_10
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
+echo '    local_closure_trigger = 10' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k local_trigger_10 -p main.fred -n 4 -m 2
+
+########## LOCAL CLOSURE, days_closed = 14
+
+fred_delete -f -k local_closed_14
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
+echo '    days_closed = 14' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k local_closed_14 -p main.fred -n 4 -m 2
+
+########## LOCAL CLOSURE, days_closed = 56
+
+fred_delete -f -k local_closed_56
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
+echo '    days_closed = 56' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k local_closed_56 -p main.fred -n 4 -m 2
+
+######################################################################### GLOBAL CLOSURE
+########## GLOBAL CLOSURE, normal
 
 fred_delete -f -k global
 
@@ -31,7 +76,51 @@ echo '}' >> parameters.fred
 
 fred_job -k global -p main.fred -n 4 -m 2
 
-########## Analysis
+########## GLOBAL CLOSURE, global_closure_trigger = 1500
+
+fred_delete -f -k global_trigger_1500
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
+echo '    global_closure_trigger = 1500' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k global_trigger_1500 -p main.fred -n 4 -m 2
+
+########## GLOBAL CLOSURE, global_closure_trigger = 500
+
+fred_delete -f -k global_trigger_500
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
+echo '    global_closure_trigger = 500' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k global_trigger_500 -p main.fred -n 4 -m 2
+
+########## GLOBAL CLOSURE, days_closed = 14
+
+fred_delete -f -k global_closed_14
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
+echo '    days_closed = 14' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k global_closed_14 -p main.fred -n 4 -m 2
+
+########## GLOBAL CLOSURE, days_closed = 56
+
+fred_delete -f -k global_closed_56
+
+echo 'parameters {' > parameters.fred
+echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
+echo '    days_closed = 56' >> parameters.fred
+echo '}' >> parameters.fred
+
+fred_job -k global_closed_56 -p main.fred -n 4 -m 2
+
+######################################################################### Analysis
 
 fred_plot -o closed -t "Number of Schools Closed" \
 	  -k no_closure,no_closure,no_closure,local,global \
@@ -49,3 +138,87 @@ fred_plot -o inc -k no_closure,local,global \
 	  -l 'No Closure','Local Incidence','Global Incidence' \
 	  -n -s 100 -M --year --clean
 
+
+
+################## Total Cases
+
+fred_plot -o local_trigs_tot -t "Local Closure Total Infected" \
+	  -k local_trigger_10,local,local_trigger_30 \
+	  -v INF.totE,INF.totE,INF.totE \
+	  -l 'Trigger = 10','Trigger = 20','Trigger = 30' \
+	  -n -s 100 -M --year --clean --leg bottom
+
+fred_plot -o global_trigs_tot -t "Global Closure Total Infected" \
+	  -k global_trigger_500,global,global_trigger_1500 \
+	  -v INF.totE,INF.totE,INF.totE \
+	  -l 'Trigger = 500','Trigger = 1000','Trigger = 1500' \
+	  -n -s 100 -M --year --clean --leg bottom
+
+fred_plot -o global_days_closed_tot -t "Global Closure Total Infected" \
+	  -k global_closed_14,global,global_closed_56 \
+	  -v INF.totE,INF.totE,INF.totE \
+	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
+	  -n -s 100 -M --year --clean --leg bottom
+
+fred_plot -o local_days_closed_tot -t "Local Closure Total Infected" \
+	  -k local_closed_14,local,local_closed_56 \
+	  -v INF.totE,INF.totE,INF.totE \
+	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
+	  -n -s 100 -M --year --clean --leg bottom 
+
+
+################## New Cases
+
+
+fred_plot -o local_trigs_new -t "Local Closure New Infected" \
+	  -k local_trigger_10,local,local_trigger_30 \
+	  -v INF.newE,INF.newE,INF.newE \
+	  -l 'Trigger = 10','Trigger = 20','Trigger = 30' \
+	  -n -s 100 -M --year --clean --leg top
+
+fred_plot -o global_trigs_new -t "Global Closure New Infected" \
+	  -k global_trigger_500,global,global_trigger_1500 \
+	  -v INF.newE,INF.newE,INF.newE \
+	  -l 'Trigger = 500','Trigger = 1000','Trigger = 1500' \
+	  -n -s 100 -M --year --clean --leg top
+
+fred_plot -o global_days_closed_new -t "Global Closure New Infected" \
+	  -k global_closed_14,global,global_closed_56 \
+	  -v INF.newE,INF.newE,INF.newE \
+	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
+	  -n -s 100 -M --year --clean --leg top
+
+fred_plot -o local_days_closed_new -t "Local Closure New Infected" \
+	  -k local_closed_14,local,local_closed_56 \
+	  -v INF.newE,INF.newE,INF.newE \
+	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
+	  -n -s 100 -M --year --clean --leg top
+
+
+#usage: fred_plot -k key -v var [ options ], where options include:
+#	-a: show all individual runs.
+#	-b: plot bar charts instead of curves.
+#	-d 0/1 : display the image file (default = 1).
+#	-e: include errorbars on plot.
+#	-f font : use the named font.
+#	-F fontsize: specify font size.
+#	-h: print this help message.
+#	-k key [ -k key ... ]: keys of jobs to plot.
+#	-n: scale y-axis to show counts per <s> people.
+#	-o outfile: send output image to indicated file.
+#	-r <n>: show individual run <n>.
+#	-s <s> : scale factor for normalization.
+#	-t title: Title to appear on plot.
+#	-v var [ -v var ... ]: variable to be plotted.
+#	-V: print list of available variables and exit.
+#	-w: plot variables averaged over epi weeks.
+#	-x xmin: min value for x-axis.
+#	-X xmax: max value for x-axis.
+#	-y ymin: min value for y-axis.
+#	-Y ymax: max value for y-axis.
+#	--yearly: plot annual values
+#	--monthly: plot monthly values
+#	--xtics <n>: put xtics every <n> units.
+#	--xlabel <s>: label the x axis with "s".
+#	--ylabel <s>: label the y axis with "s".
+#	--year 1: show year in xtics.
