@@ -102,7 +102,7 @@ This file defines new behavior for agents: while symptomatic with an influenza i
 The primary change to this simulation, and the entirety of this file, is to create an `INFLUENZA_VACCINE` condition with states that influence both this condition and the `INFLUENZA` condition.
 Agents begin in `Start` and advance to `Considering` with the probability `willing_to_consider`, defined in the `variables` block of the current file.
 Any agent that does not advanced to `Considering` goes instead to the `Excluded` state for `INFLUENZA_VACCINE` and stays there permanently.
-THese agents will not gain `INFLUENZA` immunity except by contracting the illness.
+These agents will not gain `INFLUENZA` immunity except by contracting the illness.
 
 ```fred
     state Considering {
