@@ -32,6 +32,7 @@ condition SCHOOL {
 
     state Start {
         if (admin(School)) then next(Check_Epidemic)
+        if (profile == student) then next(StudentSchoolOpen)
         default(Excluded)
     }
 
@@ -89,6 +90,18 @@ condition SCHOOL {
         close(School)
         wait(until(Aug,26))
         next(Check_Epidemic)
+    }
+
+    state StudentSchoolOpen {
+        wait(24)
+        if (has_been_closed(School)) then next(StudentSchoolClosed)
+        default(StudentSchoolOpen)
+    }
+
+    state StudentSchoolClosed {
+        wait(24)
+        if (has_been_closed(School)) then next(StudentSchoolClosed)
+        default(StudentSchoolOpen)
     }
 }
 
