@@ -99,8 +99,8 @@ This file defines new behavior for agents: while symptomatic with an influenza i
 
 `vaccine.fred` defines the variables, condition, and states (for both agents and the meta-agent) required to simulate basic vaccination behavior in our population.
 
-The primary change to this simulation, and the entirety of this file, create an `INFLUENZA_VACCINE` condition with states that influence both this condition and the `INFLUENZA` condition.
-Agents begin in `Start` and advanced to `Considering` with the probability `willing_to_consider`, defined in the `variables` block of the current file.
+The primary change to this simulation, and the entirety of this file, is to create an `INFLUENZA_VACCINE` condition with states that influence both this condition and the `INFLUENZA` condition.
+Agents begin in `Start` and advance to `Considering` with the probability `willing_to_consider`, defined in the `variables` block of the current file.
 Any agent that does not advanced to `Considering` goes instead to the `Excluded` state for `INFLUENZA_VACCINE` and stays there permanently.
 THese agents will not gain `INFLUENZA` immunity except by contracting the illness.
 
@@ -112,8 +112,7 @@ THese agents will not gain `INFLUENZA` immunity except by contracting the illnes
     }
 ```
 
-Agents that moved to `Considering` have their susceptibility to `INFLUENZA_VACCINE` set to 1 and then wait in this state until exposure to a vaccinated agent.
-We are modeling this vaccine as transmissible, so other than the initial vaccines distributed by the meta-agent, only agents in the `Considering` state that come into contact with another vaccinated agent will get the vaccine.
+Agents that moved to `Considering` have their susceptibility to `INFLUENZA_VACCINE` set to 1 and then wait to have the vaccine transmitted to the by the meta-agent.
 
 ```fred
     state Decide {
@@ -129,7 +128,7 @@ We are modeling this vaccine as transmissible, so other than the initial vaccine
     }
 ```
 
-Once an agent in `Deciding` is exposed to another vaccinated agent, they move to the `Decide` state.
+Once an agent in `Deciding` is exposed to the meta-agent, they move to the `Decide` state.
 These agents change their susceptibility to the vaccine to zero, wait 24 hours, and then "take" the vaccine, moving to the `Taker` state.
 Here, agents wait until the vaccine becomes effective, defined in the `variables` block as `days_until_effective`, and then move to either `Immune` with the `vaccine_effectiveness` probability or `Failed` otherwise.
 Agents in the `Immune` state modify their `INFLUENZA` susceptibility to zero and can no longer be infected with that malady.
@@ -157,10 +156,10 @@ Agents in both of these states remain there indefinitely.
 
 The remaining two states apply only to the meta-agent.
 At the top of the `INFLUENZA_VACCINE` condition, the meta-agent is started in `ImportStart`.
-We also define that the condition will be transmitted via proximity (that is, agents that interact with each other can pass the condition to one another) and that agents exposed to the condition will advance to the `Decide` state.
+We also define that the condition will be transmitted via proximity and that agents exposed to the condition will advance to the `Decide` state.
 
 When the meta-agent begins in `ImportStart`, it waits the number of days defined by `vaccine_delay` and then advances to `ImportVaccine`.
-In this latter state, the meta-agent exposes some proportion of the agents to the vaccine (moving them to `Decide`).
+In this latter state, the meta-agent exposes some proportion of the `Deciding` agents to the vaccine (moving them to `Decide`).
 This proportion is defined in the `variables` block as `initial_vaccines`, though we will alter this value in the `parameters.fred` file.
 
 ### `parameters.fred`
