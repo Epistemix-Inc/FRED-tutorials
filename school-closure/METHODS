@@ -123,20 +123,28 @@ fred_job -k global_closed_56 -p main.fred -n 4 -m 2
 ######################################################################### Analysis
 
 fred_plot -o closed -t "Number of Schools Closed" \
-	  -k no_closure,no_closure,no_closure,local,global \
-	  -v SCHOOL.SpringBreak,SCHOOL.SummerBreak,SCHOOL.WinterBreak,SCHOOL.Close,SCHOOL.Close \
-	  -l Spring,Summer,Winter,Local,Global \
-	  --ylabel "Schools" -M --year --leg out --clean
+	  -k local,global,no_closure,no_closure,no_closure \
+	  -v SCHOOL.Close,SCHOOL.Close,SCHOOL.SpringBreak,SCHOOL.SummerBreak,SCHOOL.WinterBreak \
+	  -l Local,Global,Spring,Summer,Winter \
+	  --ylabel "Schools" -M --year --leg out --clean --xlabel "Date"
 
-fred_plot -o tot -k no_closure,local,global \
+fred_plot -o tot -t "Total Cases" \
+	  -k no_closure,local,global \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'No Closure','Local Incidence','Global Incidence' \
-	  -n -s 100 -M --year --clean --leg bottom
+	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
 
-fred_plot -o inc -k no_closure,local,global \
+fred_plot -o inc -t "New Cases" \
+	  -k no_closure,local,global \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'No Closure','Local Incidence','Global Incidence' \
-	  -n -s 100 -M --year --clean
+	  -n -s 100 -M --year --clean --xlabel "Date"
+
+fred_plot -o students -t "Number of Students out of School" \
+	  -k local,global,no_closure \
+	  -v SCHOOL.StudentSchoolClosed,SCHOOL.StudentSchoolClosed,SCHOOL.StudentSchoolClosed \
+	  -l 'Local','Global','No Closure' \
+	  --ylabel "Students" -M --year --clean --xlabel "Date" --legend out
 
 
 
@@ -146,25 +154,25 @@ fred_plot -o local_trigs_tot -t "Local Closure Total Infected" \
 	  -k local_trigger_10,local,local_trigger_30 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'Trigger = 10','Trigger = 20','Trigger = 30' \
-	  -n -s 100 -M --year --clean --leg bottom
+	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
 
 fred_plot -o global_trigs_tot -t "Global Closure Total Infected" \
 	  -k global_trigger_500,global,global_trigger_1500 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'Trigger = 500','Trigger = 1000','Trigger = 1500' \
-	  -n -s 100 -M --year --clean --leg bottom
+	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
 
 fred_plot -o global_days_closed_tot -t "Global Closure Total Infected" \
 	  -k global_closed_14,global,global_closed_56 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg bottom
+	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
 
 fred_plot -o local_days_closed_tot -t "Local Closure Total Infected" \
 	  -k local_closed_14,local,local_closed_56 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg bottom 
+	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
 
 
 ################## New Cases
@@ -174,51 +182,22 @@ fred_plot -o local_trigs_new -t "Local Closure New Infected" \
 	  -k local_trigger_10,local,local_trigger_30 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'Trigger = 10','Trigger = 20','Trigger = 30' \
-	  -n -s 100 -M --year --clean --leg top
+	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
 
 fred_plot -o global_trigs_new -t "Global Closure New Infected" \
 	  -k global_trigger_500,global,global_trigger_1500 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'Trigger = 500','Trigger = 1000','Trigger = 1500' \
-	  -n -s 100 -M --year --clean --leg top
+	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
 
 fred_plot -o global_days_closed_new -t "Global Closure New Infected" \
 	  -k global_closed_14,global,global_closed_56 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg top
+	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
 
 fred_plot -o local_days_closed_new -t "Local Closure New Infected" \
 	  -k local_closed_14,local,local_closed_56 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg top
-
-
-#usage: fred_plot -k key -v var [ options ], where options include:
-#	-a: show all individual runs.
-#	-b: plot bar charts instead of curves.
-#	-d 0/1 : display the image file (default = 1).
-#	-e: include errorbars on plot.
-#	-f font : use the named font.
-#	-F fontsize: specify font size.
-#	-h: print this help message.
-#	-k key [ -k key ... ]: keys of jobs to plot.
-#	-n: scale y-axis to show counts per <s> people.
-#	-o outfile: send output image to indicated file.
-#	-r <n>: show individual run <n>.
-#	-s <s> : scale factor for normalization.
-#	-t title: Title to appear on plot.
-#	-v var [ -v var ... ]: variable to be plotted.
-#	-V: print list of available variables and exit.
-#	-w: plot variables averaged over epi weeks.
-#	-x xmin: min value for x-axis.
-#	-X xmax: max value for x-axis.
-#	-y ymin: min value for y-axis.
-#	-Y ymax: max value for y-axis.
-#	--yearly: plot annual values
-#	--monthly: plot monthly values
-#	--xtics <n>: put xtics every <n> units.
-#	--xlabel <s>: label the x axis with "s".
-#	--ylabel <s>: label the y axis with "s".
-#	--year 1: show year in xtics.
+	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
