@@ -51,7 +51,7 @@ condition INFLUENZA {
 
 Specifically, it directs a meta-agent to start in the `ImportDelay` state and transition to `Import` after the delay.
 Looking back to `simpleflu.fred`, we can see that `meta_start_state = Import`.
-But calling `include simpleflu.fred` prior to this new `condition` block in the `main.fred` script causes the settings in the initial file to be overwritten.
+Calling `include simpleflu.fred` prior to this new `condition` block in the `main.fred` script causes the settings in the initial file to be overwritten.
 Now, rather than initializing in `Import` and immediately infecting some of the agents with `INFLUENZA`, the meta-agent will begin in `ImportDelay` and wait the parameterized delay before advancing to `Import` and assigning infections.
 
 
