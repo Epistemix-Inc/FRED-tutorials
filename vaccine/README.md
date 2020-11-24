@@ -170,9 +170,18 @@ This is largely a convenience for programmatically modifying the simulation para
 `parameters.fred` is the last file `included` in `main.fred`, allowed the contained values to overwrite any that were specified in earlier-imported files.
 The `METHODS` file in this directory defines two different FRED jobs by sequentially creating two different `parameters.fred` files and running `fred_job` with each of those files.
 
+One important note is that this file is only modifying the value of a variable that has already been declared.
+Lines 6-7 of `vaccine.fred` initialize `initial_vaccines` and set a value for the simulation.
+If this variable had not already been declared, `global initial_vaccines` would need to exist in the `parameters.fred` file.
+
 ## Sample Model Outputs
 
 This model is run using the `METHODS` file.
+Running this file produces two sets of outputs that differ only in the proportion of the population that is originally vaccinated, 0% or 30%.
+Ideally, there would be a testing step in development to make sure that vaccines are being transmitted and imparting immunity (or reducing susceptibility) in the way that is expected.
+We can see that initially vaccinating 30% of the population reduces the cumulative infections substantially, providing evidence the `INFLUENZA_VACCINE` condition is functioning as expected.
+
+![Cumulative cases over time](figures/vaccine-tot.png)
 
 ## Summary
 
