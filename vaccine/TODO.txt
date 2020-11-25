@@ -1,4 +1,5 @@
 
+
 1. Show the effects of setting the initial vaccination rate to 10%, 20%
    30%, and 40%.
 
@@ -7,5 +8,3 @@
 
 3. Show the effects of changing the vaccine effectiveness to 50% or
    90%.
-
-
