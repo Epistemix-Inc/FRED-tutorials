@@ -7,7 +7,7 @@
 
 ## Introduction
 
-This example builds on the the Flu with Behavior model (see `../flu-with-behavior`) by adding an `INFLUENZA_VACCINE` condition that allows agents to be exposed to a vaccine that probabilistically protects the agent from influenza by setting `INFLUENZA.sus = 0`.
+This example builds on the the Flu with Behavior model (see `../flu-with-behavior`) by adding an `INFLUENZA_VACCINE` condition that allows agents to be exposed to a vaccine that protects the agent from influenza with a probability equal to `vaccine_effectiveness` by setting `INFLUENZA.sus = 0`.
 
 ## Review of code implementing the model
 
@@ -35,7 +35,7 @@ variables {
 }
 ```
 
-In this case, it is the number of days to wait before introducing the vaccination to the first agents.
+In this case, it is the number of days to wait before vaccinating the first agents.
 The next code chunk modifies the `INFLUENZA` condition.
 
 ```fred
@@ -87,7 +87,10 @@ For the purpose of this tutorial, consider the following code snippet which spec
 ```
 
 Here `INFLUENZA.trans = 1` and `INFLUENZA.trans = 0` are action rules that cause agents entering the `INFLUENZA.InfectiousSymptomatic` state to change their [transmissibility](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/user_guide/chapter9/chapter9.html#the-transmissibility-of-an-agent) of influenza to 1, and agents entering the `INFLUENZA.Recovered` state to change their transmissibility of influenza to 0 (i.e. they are non-infectious).
-The wait rule `wait(24* lognormal(5.0,1.5))` causes each agent that becomes infectious and symptomatic to remain so for a number of days determined by sampling from a [lognormal distribution](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/user_guide/chapter5/chapter5.html?highlight=lognormal#statistical-distributions) with median=5.0 and dispersion=1.5. Finally the transition rule `next(Recovered)` causes agents to transition, deterministically, to the `Recovered` state once their period of infection has elapsed. The wait rule `wait()` and transition rule `next()` cause agents that enter the `Recovered` state to remain in that state indefinitely.
+This change is accomplished by multiplying condition transmissiblity by the agent's transmissibility, but in this case `INFLUENZA` transmissibility is already equal to 1.
+The wait rule `wait(24* lognormal(5.0,1.5))` causes each agent that becomes infectious and symptomatic to remain so for a number of days determined by sampling from a [lognormal distribution](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/user_guide/chapter5/chapter5.html?highlight=lognormal#statistical-distributions) with median=5.0 and dispersion=1.5. Finally the transition rule `next(Recovered)` causes agents to transition, deterministically, to the `Recovered` state once their period of infection has elapsed.
+Once in `Recovered`, transmissibility is set to 0 and the agent waits indefinitely (`wait()`).
+The `next()` transition has no effect, but is required to have any following rule.
 
 ### `stayhome.fred`
 
@@ -128,7 +131,7 @@ Agents that moved to `Considering` have their susceptibility to `INFLUENZA_VACCI
     }
 ```
 
-Once an agent in `Deciding` is exposed to the meta-agent, they move to the `Decide` state.
+Once an agent in `Considering` is exposed to the meta-agent, they move to the `Decide` state.
 These agents change their susceptibility to the vaccine to zero, wait 24 hours, and then "take" the vaccine, moving to the `Taker` state.
 Here, agents wait until the vaccine becomes effective, defined in the `variables` block as `days_until_effective`, and then move to either `Immune` with the `vaccine_effectiveness` probability or `Failed` otherwise.
 Agents in the `Immune` state modify their `INFLUENZA` susceptibility to zero and can no longer be infected with that malady.
@@ -159,19 +162,15 @@ At the top of the `INFLUENZA_VACCINE` condition, the meta-agent is started in `I
 We also define that the condition will be transmitted via proximity and that agents exposed to the condition will advance to the `Decide` state.
 
 When the meta-agent begins in `ImportStart`, it waits the number of days defined by `vaccine_delay` and then advances to `ImportVaccine`.
-In this latter state, the meta-agent exposes some proportion of the `Deciding` agents to the vaccine (moving them to `Decide`).
+In this latter state, the meta-agent exposes some proportion of the `Considering` agents to the vaccine (moving them to `Decide`).
 This proportion is defined in the `variables` block as `initial_vaccines`, though we will alter this value in the `parameters.fred` file.
 
 ### `parameters.fred`
 
 A `parameters.fred` file is also introduced in this model.
 This is largely a convenience for programmatically modifying the simulation parameters with a bash script.
-`parameters.fred` is the last file `included` in `main.fred`, allowed the contained values to overwrite any that were specified in earlier-imported files.
+`parameters.fred` is the last file `included` in `main.fred`, allowing the contained values to overwrite any that were specified in earlier-imported files.
 The `METHODS` file in this directory defines two different FRED jobs by sequentially creating two different `parameters.fred` files and running `fred_job` with each of those files.
-
-One important note is that this file is only modifying the value of a variable that has already been declared.
-Lines 6-7 of `vaccine.fred` initialize `initial_vaccines` and set a value for the simulation.
-If this variable had not already been declared, `global initial_vaccines` would need to exist in the `parameters.fred` file.
 
 ## Sample Model Outputs
 
