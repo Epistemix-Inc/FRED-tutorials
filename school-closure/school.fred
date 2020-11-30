@@ -31,31 +31,31 @@ condition SCHOOL {
     admin_start_state = Start
 
     state Start {
-        if (admin(School)) then next(Check_Epidemic)
+        if (admin(School)) then next(CheckEpidemic)
         if (profile == student) then next(StudentSchoolOpen)
         default(Excluded)
     }
 
-    state Check_Epidemic {
+    state CheckEpidemic {
         wait(0)
-    	if (school_closure_policy == LOCAL_CLOSURE) then next(Check_Local_Epidemic)
-    	if (school_closure_policy == GLOBAL_CLOSURE) then next(Check_Global_Epidemic)
-        default(Check_Calendar)
+    	if (school_closure_policy == LOCAL_CLOSURE) then next(CheckLocalEpidemic)
+    	if (school_closure_policy == GLOBAL_CLOSURE) then next(CheckGlobalEpidemic)
+        default(CheckCalendar)
     }
 
-    state Check_Local_Epidemic {
+    state CheckLocalEpidemic {
         wait(0)
 	if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
-        default(Check_Calendar)
+        default(CheckCalendar)
     }
 
-    state Check_Global_Epidemic {
+    state CheckGlobalEpidemic {
         wait(0)
 	if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
-        default(Check_Calendar)
+        default(CheckCalendar)
     }
 
-    state Check_Calendar {
+    state CheckCalendar {
         wait(0)
         if (date_range(Dec-20,Jan-02)) then next(WinterBreak) 
         if (date_range(Mar-10,Mar-15)) then next(SpringBreak)
@@ -65,31 +65,31 @@ condition SCHOOL {
 
     state Open {
         wait(24)
-        default(Check_Epidemic)
+        default(CheckEpidemic)
     }
 
     state Close {
         close(School)
         wait(24*days_closed)
-        next(Check_Epidemic)
+        next(CheckEpidemic)
     }
 
     state WinterBreak {
         close(School)
         wait(until(Jan,03))
-        next(Check_Epidemic)
+        next(CheckEpidemic)
     }
 
     state SpringBreak {
         close(School)
         wait(until(Mar,16))
-        next(Check_Epidemic)
+        next(CheckEpidemic)
     }
 
     state SummerBreak {
         close(School)
         wait(until(Aug,26))
-        next(Check_Epidemic)
+        next(CheckEpidemic)
     }
 
     state StudentSchoolOpen {
