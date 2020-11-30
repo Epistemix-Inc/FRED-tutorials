@@ -12,11 +12,11 @@ This model studies the effects of school closures in Jefferson County.  The `mai
 
 ### Normal Closures
 
-The schools are given a school schedule that closes the schools during summer, winter, and spring break.  There are states for each break: `WinterBreak`, `SpringBreak`, and`SummerBreak`.  In these states, admins close their schools and wait until the end of the break period.  They pass into these states from the `Check_Calendar` state:
+The schools are given a school schedule that closes the schools during summer, winter, and spring break.  There are states for each break: `WinterBreak`, `SpringBreak`, and`SummerBreak`.  In these states, admins close their schools and wait until the end of the break period.  They pass into these states from the `CheckCalendar` state:
 
 
 ```fred
-    state Check_Calendar {
+    state CheckCalendar {
         wait(0)
         if (date_range(Dec-20,Jan-02)) then next(WinterBreak) 
         if (date_range(Mar-10,Mar-15)) then next(SpringBreak)
@@ -34,28 +34,28 @@ No flu closures will take place if `school_closure_policy` is set equal to `NO_C
 The schools are also setup to actively check the number of cases of flu either in their school or in their county and close schools if the number passes a threshold set by one of the variables: `local_closure_trigger` or `global_closure_trigger`.  After deciding to close due to the flu, the admin goes to the `Close` state, and the school remains closed for a time period set by the variable `days_closed`.
 
 #### Global Flu Closure
-The `GLOBAL_CLOSURE `, `LOCAL_CLOSURE`, and `NO_CLOSURE` variables are set to arbitrary numeric values to get around the inability to assign strings to variables.  The global closure option is selected by setting `school_closure_policy = GLOBAL_CLOSURE `.  This variable passes admins from the `Check_Epidemic` state in the `SCHOOL` condition to the `Check_Global_Epidemic ` state:
+The `GLOBAL_CLOSURE `, `LOCAL_CLOSURE`, and `NO_CLOSURE` variables are set to arbitrary numeric values to get around the inability to assign strings to variables.  The global closure option is selected by setting `school_closure_policy = GLOBAL_CLOSURE `.  This variable passes admins from the `CheckEpidemic` state in the `SCHOOL` condition to the `CheckGlobalEpidemic ` state:
 
 
 ```fred
-    state Check_Global_Epidemic {
+    state CheckGlobalEpidemic {
         wait(0)
 		if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
-        default(Check_Calendar)
+        default(CheckCalendar)
     }
 ```
 
 This state checks the county flu count against the global threshold, `local_closure_trigger`.  If the threshold is reached, then all admins go to `Close` state.
 #### Local Flu Closure
 
-The local closure option is selected by setting `school_closure_policy = LOCAL_CLOSURE `.  This variable passes admins from the `Check_Epidemic` state in the `SCHOOL` condition to the `Check_Local_Epidemic ` state:
+The local closure option is selected by setting `school_closure_policy = LOCAL_CLOSURE `.  This variable passes admins from the `CheckEpidemic` state in the `SCHOOL` condition to the `CheckLocalEpidemic ` state:
 
 
 ```fred
-    state Check_Local_Epidemic {
+    state CheckLocalEpidemic {
         wait(0)
 		if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
-        default(Check_Calendar)
+        default(CheckCalendar)
     }
 ```
 
