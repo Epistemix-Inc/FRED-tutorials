@@ -34,7 +34,7 @@ No flu closures will take place if `school_closure_policy` is set equal to `NO_C
 The schools are also setup to actively check the number of cases of flu either in their school or in their county and close schools if the number passes a threshold set by one of the variables: `local_closure_trigger` or `global_closure_trigger`.  After deciding to close due to the flu, the admin goes to the `Close` state, and the school remains closed for a time period set by the variable `days_closed`.
 
 #### Global Flu Closure
-The `GLOBAL_CLOSURE `, `LOCAL_CLOSURE`, and `NO_CLOSURE` variables are set to arbitrary numeric values to get around the inability to assign strings to variables.  The global closure option is selected by setting `school_closure_policy = GLOBAL_CLOSURE `.  This variable passes admins from the `CheckEpidemic` state in the `SCHOOL` condition to the `CheckGlobalEpidemic ` state:
+The `GLOBAL_CLOSURE `, `LOCAL_CLOSURE`, and `NO_CLOSURE` variables are set to arbitrary but unique integers to get around the inability to assign strings to variables.  The global closure option is selected by setting `school_closure_policy = GLOBAL_CLOSURE `.  This variable passes admins from the `CheckEpidemic` state in the `SCHOOL` condition to the `CheckGlobalEpidemic ` state:
 
 
 ```fred
