@@ -96,9 +96,20 @@ state Import {
 
 ## Sample Model Outputs
 
+This model is run using the `METHODS` file, which is a `bash` script that runs the models and then uses `fred_plot` to generate a histogram of new infections per day (and week, not shown).
+This is consistent with the condition propagating through the specified population and creating enough `Recovered` individuals that the condition can no longer transmit.
 
+![New exposures per day](figures/daily.png)
 
 ## Summary
 
+This tutorial introduces two concepts:
 
+- a `CONDITION` with `States` that can be transmitted between agents.
+- a meta agent that introduces the `CONDITION` to the population of agents.
 
+Within the states in `INFLUENZA`, we also used:
+
+- `wait`, which causes the agent to pause in a given state
+- `next`, which causes an agent to transition to a new state
+- two forms of probabilistic behavior, using `lognormal` to generate wait times and the combination of `next with prob` and `default` to probabilistically assign an agent to symptomatic or asymptomatic infectiousness.
