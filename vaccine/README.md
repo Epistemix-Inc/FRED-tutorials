@@ -1,10 +1,5 @@
 # Flu with Vaccine Model
 
-## TODO
-
-- do `flu_delay` and the meta-agent assignments need to be made in `main.fred`?
-- Sample Model Outputs
-
 ## Introduction
 
 This example builds on the the Flu with Behavior model (see `../flu-with-behavior`) by adding an `INFLUENZA_VACCINE` condition that allows agents to be exposed to a vaccine that protects the agent from influenza with a probability equal to `vaccine_effectiveness` by setting `INFLUENZA.sus = 0`.
