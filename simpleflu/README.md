@@ -15,7 +15,7 @@ The code that implements the **Simple Flu** model is contained in two `.fred` fi
 
 ### main.fred
 
-This file does not influence the `INFLUENZA` model itself.
+This file does not contribute to the model of flu contagion -- that model is entirely defined in `simpleflu.fred`.
 Instead, the `main.fred` file defines the location and time period of a particular run of simulations and imports the FRED model that defines the `INFLUENZA` condition.
 
 The `simulation` block handles the first part of this.
@@ -49,7 +49,9 @@ state Susceptible {
 ```
 
 Once in `Exposed`, an agent loses its susceptibility to `INFLUENZA`.
-The agent then waits through an incubation period and moves to a symptomatic infection state (`InfectiousSymptomatic`) with a probability of .33 and otherwise moves to an asymptomatic infectious state (`InfectiousAsymptomatic`).
+The agent then waits through an incubation period and either moves to a symptomatic infection state (`InfectiousSymptomatic`) with a probability of 0.33 or moves to an asymptomatic infectious state (`InfectiousAsymptomatic`) with a probability of 0.67.
+Explicitly defining transition probabilities is one way of introducing stochastic behavior into the model.
+Another way is to draw values from a probability distribution, demonstrated by defining the incubation period for each agent as a sample from a `lognormal` distribution
 
 ```fred
 state Exposed {
