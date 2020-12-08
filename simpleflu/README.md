@@ -3,7 +3,7 @@
 ## Introduction
 
 This example introduces the **Simple Flu** model, which is a standalone model of flu infection and the basis for the `../flu-with-behavior`, `../school-closure`, and `../vaccine` tutorials.
-This model defines a condition, `INFLUENZA`, which agents can contract via contract with the meta agent (to create initial infections) or via other agents.
+This model defines a condition, `INFLUENZA`, which agents can contract via either the meta agent (to create initial infections) or other agents.
 Having contracted the condition, agents either do or do not develop symptoms and then recover, at which point they can no longer contract `INFLUENZA`.
 
 ## Review of code implementing the model
@@ -16,7 +16,7 @@ The code that implements the **Simple Flu** model is contained in two `.fred` fi
 ### main.fred
 
 This file does not influence the `INFLUENZA` model itself.
-Instead, the `main.fred` file defines the location and time period of a particular run of simulations and imports the FRED model that defines `INFLUENZA`.
+Instead, the `main.fred` file defines the location and time period of a particular run of simulations and imports the FRED model that defines the `INFLUENZA` condition.
 
 The `simulation` block handles the first part of this.
 This block is required to define what location and time period will be simulated.
@@ -31,7 +31,7 @@ simulation {
 }
 ```
 
-The only additional content in this file is the line `include simpleflu.fred`, which imports the `INFLUENZA` condition from `simpleflu.fred`.
+The only additional content in this file is the line `include simpleflu.fred`, which imports the `INFLUENZA` condition and associated states from `simpleflu.fred`.
 
 ### simpleflu.fred
 
@@ -60,8 +60,8 @@ state Exposed {
 }
 ```
 
-Both infectious states work roughly the same.
-Once entering one of the infectious state after the wait period in `Exposed`, agents gain a non-zero transmissibility and wait through an infectious period before recovering.
+Both infectious states are identical with the exception of their transmissibility.
+Once entering one of the infectious states after the wait period in `Exposed`, agents gain a non-zero transmissibility and wait through an infectious period before recovering.
 Asymptomatic infections are half as transmissible as infectious ones, according to this model.
 
 ```fred
@@ -96,7 +96,7 @@ state Import {
 
 ## Sample Model Outputs
 
-This model is run using the `METHODS` file, which is a `bash` script that runs the models and then uses `fred_plot` to generate a histogram of new infections per day (and week, not shown).
+This model can be run using the `METHODS` file, which is a `bash` script that runs the models and then uses `fred_plot` to generate a histogram of new infections per day (and week, not shown).
 This is consistent with the condition propagating through the specified population and creating enough `Recovered` individuals that the condition can no longer transmit.
 
 ![New exposures per day](figures/daily.png)
