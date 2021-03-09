@@ -22,4 +22,4 @@ fred_plot -o vaccine-inc -k novaccine,vaccine -v INFLUENZA.newExposed,INFLUENZA.
 
 fred_plot -o vaccine-tot -k novaccine,vaccine -v INFLUENZA.totExposed,INFLUENZA.totExposed \
 	  -t "Effect of Vaccine"  \
-	  -l NoVaccine,Vaccine -d 0 --clean -M
+	  -l NoVaccine,Vaccine -d 0--clean -M
