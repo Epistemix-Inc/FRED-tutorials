@@ -1,5 +1,6 @@
 
 condition STAY_HOME {
+    start_state = No
 
     state No {}
 

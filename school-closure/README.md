@@ -2,7 +2,7 @@
 
 ## Overview
 
-This model studies the effects of school closures in Jefferson County.  The `main.fred` file includes three components: 
+This model studies the effects of school closures in Jefferson County, PA.  The `main.fred` file includes three components: 
 
 * Influenza condition
 * `school.fred`: a condition for admins to close the school according to case numbers in their school or county as well as normally scheduled holiday closure dates.  This condition also keeps track of students whose schools are closed.

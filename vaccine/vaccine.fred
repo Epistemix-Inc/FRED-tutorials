@@ -23,6 +23,7 @@ condition INFLUENZA_VACCINE {
     exposed_state = Decide
 
     state Start {
+        wait(0)
         next(Considering) with prob(willing_to_consider)
         default(Excluded)
     }

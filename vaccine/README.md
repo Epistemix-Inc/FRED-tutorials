@@ -31,7 +31,7 @@ variables {
 ```
 
 In this case, it is the number of days to wait before vaccinating the first agents.
-The next code chunk modifies the `INFLUENZA` condition.
+The next code chunk modifies the `INFLUENZA` condition (which was previously defined in `simpleflu.fred`)
 
 ```fred
 condition INFLUENZA {
