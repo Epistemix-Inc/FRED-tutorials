@@ -126,25 +126,25 @@ fred_plot -o closed -t "Number of Schools Closed" \
 	  -k local,global,no_closure,no_closure,no_closure \
 	  -v SCHOOL.Close,SCHOOL.Close,SCHOOL.SpringBreak,SCHOOL.SummerBreak,SCHOOL.WinterBreak \
 	  -l Local,Global,Spring,Summer,Winter \
-	  --ylabel "Schools" -M --year --leg out --clean --xlabel "Date"
+	  --ylabel "Schools" -M --year --leg out -d 0 --clean --xlabel "Date"
 
 fred_plot -o tot -t "Total Cases" \
 	  -k no_closure,local,global \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'No Closure','Local Incidence','Global Incidence' \
-	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg bottom --xlabel "Date"
 
 fred_plot -o inc -t "New Cases" \
 	  -k no_closure,local,global \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'No Closure','Local Incidence','Global Incidence' \
-	  -n -s 100 -M --year --clean --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --xlabel "Date"
 
 fred_plot -o students -t "Number of Students out of School" \
 	  -k local,global,no_closure \
 	  -v SCHOOL.StudentSchoolClosed,SCHOOL.StudentSchoolClosed,SCHOOL.StudentSchoolClosed \
 	  -l 'Local','Global','No Closure' \
-	  --ylabel "Students" -M --year --clean --xlabel "Date" --legend out
+	  --ylabel "Students" -M --year -d 0 --clean --xlabel "Date" --legend out
 
 
 
@@ -154,25 +154,25 @@ fred_plot -o local_trigs_tot -t "Local Closure Total Infected" \
 	  -k local_trigger_10,local,local_trigger_30 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'Trigger = 10','Trigger = 20','Trigger = 30' \
-	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg bottom --xlabel "Date"
 
 fred_plot -o global_trigs_tot -t "Global Closure Total Infected" \
 	  -k global_trigger_500,global,global_trigger_1500 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'Trigger = 500','Trigger = 1000','Trigger = 1500' \
-	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg bottom --xlabel "Date"
 
 fred_plot -o global_days_closed_tot -t "Global Closure Total Infected" \
 	  -k global_closed_14,global,global_closed_56 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg bottom --xlabel "Date"
 
 fred_plot -o local_days_closed_tot -t "Local Closure Total Infected" \
 	  -k local_closed_14,local,local_closed_56 \
 	  -v INF.totE,INF.totE,INF.totE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg bottom --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg bottom --xlabel "Date"
 
 
 ################## New Cases
@@ -182,22 +182,22 @@ fred_plot -o local_trigs_new -t "Local Closure New Infected" \
 	  -k local_trigger_10,local,local_trigger_30 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'Trigger = 10','Trigger = 20','Trigger = 30' \
-	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg top --xlabel "Date"
 
 fred_plot -o global_trigs_new -t "Global Closure New Infected" \
 	  -k global_trigger_500,global,global_trigger_1500 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'Trigger = 500','Trigger = 1000','Trigger = 1500' \
-	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg top --xlabel "Date"
 
 fred_plot -o global_days_closed_new -t "Global Closure New Infected" \
 	  -k global_closed_14,global,global_closed_56 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg top --xlabel "Date"
 
 fred_plot -o local_days_closed_new -t "Local Closure New Infected" \
 	  -k local_closed_14,local,local_closed_56 \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
-	  -n -s 100 -M --year --clean --leg top --xlabel "Date"
+	  -n -s 100 -M --year -d 0 --clean --leg top --xlabel "Date"

@@ -31,6 +31,7 @@ condition SCHOOL {
     admin_start_state = Start
 
     state Start {
+        wait(0)
         if (admin(School)) then next(CheckEpidemic)
         if (profile == student) then next(StudentSchoolOpen)
         default(Excluded)
@@ -45,13 +46,13 @@ condition SCHOOL {
 
     state CheckLocalEpidemic {
         wait(0)
-	if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
+	    if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
         default(CheckCalendar)
     }
 
     state CheckGlobalEpidemic {
         wait(0)
-	if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
+	    if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
         default(CheckCalendar)
     }
 
