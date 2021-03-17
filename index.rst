@@ -4,7 +4,7 @@ FRED Language Tutorials
 Welcome to the FRED tutorials documentation.
 
 FRED is a programming language and modeling platform for simulating how a population changes over time. This document
-discusses the tutorials provided for the FRED Modeling Language\ |trade|.
+discusses the tutorials provided for the FRED Modeling Language\ |trade| to provide examples and guidance for FRED users.
 
 .. toctree::
    :maxdepth: 1

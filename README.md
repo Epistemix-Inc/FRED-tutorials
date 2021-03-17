@@ -10,9 +10,9 @@ making use of additional language features. Consequently new users will probably
 benefit from reading the tutorials in the following order:
 
 1. [Simple Flu](simpleflu/README.md)
-2. Flu with Behavior] (flu-with-behavior)
-3. Flu with School Closure] (school-closure)
-4. Flu with Vaccine](vaccine)
+2. [Flu with Behavior](flu-with-behavior/README.md)
+3. [Flu with School Closure](school-closure/README.md)
+4. [Flu with Vaccine](vaccine/README.md)
 
 We also hope experienced users will find the models described here, and the
 programming patterns employed in their implementation, will serve as a useful
