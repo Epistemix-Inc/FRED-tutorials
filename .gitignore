@@ -11,6 +11,9 @@
 # ignore file that start with period
 **/\.*
 
+# ignore sphinx build directory
+_build
+
 # include the .gitignore file
 !.gitignore
 
