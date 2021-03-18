@@ -16,13 +16,11 @@
 
 # -- FRED pygments Lexer -----------------------------------------------------
 # This is a place holder until a more complete FRED lexer can be developed
+import sys
+sys.path.append('.')
+
 from sphinx.highlighting import lexers
-from pygments.lexers.special import TextLexer
-
-__name__=['FREDLexer']
-
-class FREDLexer(TextLexer):
-    name = 'fred'
+from fredlexer import FREDLexer
 
 lexers['fred'] = FREDLexer()
 

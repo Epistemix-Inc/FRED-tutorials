@@ -8,6 +8,9 @@
 **/*.plt
 **/*.pdf
 
+# ignore python constructs
+__pycache__
+
 # ignore file that start with period
 **/\.*
 
