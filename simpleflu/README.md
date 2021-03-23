@@ -1,10 +1,12 @@
 # Simple Flu
 
+This example introduces the **Simple Flu** model, which is a standalone model of flu infection and the basis for the `../flu-with-behavior`, `../school-closure`, and `../vaccine` tutorials.
+
 ## Introduction
 
-This example introduces the **Simple Flu** model, which is a standalone model of flu infection and the basis for the `../flu-with-behavior`, `../school-closure`, and `../vaccine` tutorials.
 This model defines a condition, `INFLUENZA`, which agents can contract via either the meta agent (to create initial infections) or other agents.
-Having contracted the condition, agents either do or do not develop symptoms and then recover, at which point they can no longer contract `INFLUENZA`.
+Having contracted the condition, agents either do or do not develop symptoms and then recover, at which point they are immune
+and can no longer contract `INFLUENZA`.
 
 ## Review of code implementing the model
 
@@ -19,7 +21,7 @@ This file does not contribute to the model of flu contagion -- that model is ent
 Instead, the `main.fred` file defines the location and time period of a particular run of simulations and imports the FRED model that defines the `INFLUENZA` condition.
 
 The `simulation` block handles the first part of this.
-This block is required to define what location and time period will be simulated.
+This block is required in FRED programs to define what location and time period will be simulated.
 This instance also specifies that weekly outputs will be generated with `weekly_data = 1`.
 
 ```fred
