@@ -37,17 +37,24 @@ The only additional content in this file is the line `include simpleflu.fred`, w
 
 ### simpleflu.fred
 
-This file does all of the definition of the `INFLUENZA` condition and its initial conditions.
+This file defines the `INFLUENZA` condition through a series of states.
 `INFLUENZA` is a condition that can be passed by coming into contact with other agents (`transmission_mode = proximity`).
-Agents all begin in the `Susceptible` state, where they have their susceptibility set to 1 and wait indefinitely to be `exposed`.
-Exposure, either via the meta agent or another agent, moves a given agent to `Exposed`.
+Agents all begin in the `Susceptible` state (`start_state = Susceptible`), where they have their susceptibility set to 1 and wait indefinitely to be `exposed`.
+Exposure, either via the meta agent or another agent, moves a given agent to the `Exposed` state (`exposed_state = Exposed`).
 
 ```fred
-state Susceptible {
-    INFLUENZA.sus = 1
-    wait()
-    next()
-}
+condition INFLUENZA {
+    transmission_mode = proximity
+    transmissibility = 1.0
+    start_state = Susceptible
+    exposed_state = Exposed
+    meta_start_state = Import
+
+    state Susceptible {
+        INFLUENZA.sus = 1
+        wait()
+        next()
+    }
 ```
 
 Once in `Exposed`, an agent loses its susceptibility to `INFLUENZA`.
@@ -56,12 +63,12 @@ Explicitly defining transition probabilities is one way of introducing stochasti
 Another way is to draw values from a probability distribution, demonstrated by defining the incubation period for each agent as a sample from a `lognormal` distribution
 
 ```fred
-state Exposed {
-    INFLUENZA.sus = 0
-    wait(24*lognormal(1.9,1.23))
-    next(InfectiousAsymptomatic) with prob(0.33)
-    default(InfectiousSymptomatic)
-}
+    state Exposed {
+        INFLUENZA.sus = 0
+        wait(24 * lognormal(1.9,1.23))
+        next(InfectiousAsymptomatic) with prob(0.33)
+        default(InfectiousSymptomatic)
+    }
 ```
 
 Both infectious states are identical with the exception of their transmissibility.
@@ -69,33 +76,33 @@ Once entering one of the infectious states after the wait period in `Exposed`, a
 Asymptomatic infections are half as transmissible as infectious ones, according to this model.
 
 ```fred
-state InfectiousSymptomatic {
-    INFLUENZA.trans = 1          # this value is .5 for InfectiousAsymptomatic
-    wait(24* lognormal(5.0,1.5))
-    next(Recovered)
-}
+    state InfectiousSymptomatic {
+        INFLUENZA.trans = 1          # this value is .5 for InfectiousAsymptomatic
+        wait(24* lognormal(5.0,1.5))
+        next(Recovered)
+    }
 ```
 
 Once the infectious period is over, agents move to the `Recovered` condition.
 This condition reduces transmissibility of `INFLUENZA` to zero and continues indefinitely.
 
 ```fred
-state Recovered {
-    INFLUENZA.trans = 0
-    wait()
-    next()
-}
+    state Recovered {
+        INFLUENZA.trans = 0
+        wait()
+        next()
+    }
 ```
 
-The only remaining state in `simpleflu.fred` is the `Import` condition, which is the starting state for the meta agent.
-This state prompts the meta agent to infect ten agents and then wait indefinitely.
+The only remaining state in `simpleflu.fred` is the `Import` condition, which is the starting state for the meta agent, due to the statement `meta_start_state = Import` at the start of the condition.
+This state prompts the meta agent to infect ten random agents and then wait indefinitely.
 
 ```fred
-state Import {
-    import_count(10)
-    wait()
-    next()
-}
+    state Import {
+        import_count(10)
+        wait()
+        next()
+    }
 ```
 
 ## Sample Model Outputs
