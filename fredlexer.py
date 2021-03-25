@@ -2,9 +2,10 @@
     FRED lexer derived from the pygments.lexers.RegexLex class
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Lexers for the FRED Modeling Language (TM).
+    Lexers for the FRED Modeling Language (TM). This code is based on the
+    code for the pygments.lexers.dylan.DylanLexer lexer.
 
-    :copyright: Copyright 2021 by Epistemix In.c
+    :copyright: Copyright 2021 by Epistemix Inc.
     :license: BSD, see LICENSE for details.
 """
 
@@ -31,7 +32,7 @@ class FREDLexer(RegexLexer):
          'locations', 'start_date', 'end_date', 'weekly_data',
          'start_state', 'meta_start_state', 'has_administrator',
          'global', 'personal', 'import', 'import_per_capita',
-         'transmission_mode', 'exposed_state'}
+         'transmission_mode', 'transmissibility', 'proximity', 'exposed_state'}
 
     keywords = {
        'condition', 'include', 'parameters', 'simulation', 'state', 'variables'}
@@ -42,7 +43,7 @@ class FREDLexer(RegexLexer):
 
     functions = {
         'if', 'foobar', 'select', 'prob', 'absent', 'present',
-        'bernoulli', 'set_state', 'lognormal',
+        'bernoulli', 'set_state', 'lognormal', 'sus', 'trans',
         'date_range', }
 
     valid_name = '\\\\?[\\w!&*<>|^$%@\\-+~?/=]+'
