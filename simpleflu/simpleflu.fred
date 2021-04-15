@@ -18,20 +18,20 @@ condition INFLUENZA {
 
     state Exposed {
         INFLUENZA.sus = 0
-        wait(24*lognormal(1.9,1.23))
+        wait(24 * lognormal(1.9,1.23))
         next(InfectiousAsymptomatic) with prob(0.33)
         default(InfectiousSymptomatic)
     }
 
     state InfectiousSymptomatic {
         INFLUENZA.trans = 1
-        wait(24* lognormal(5.0,1.5))
+        wait(24 * lognormal(5.0,1.5))
         next(Recovered)
     }
 
     state InfectiousAsymptomatic {
         INFLUENZA.trans = 0.5
-        wait( 24 * lognormal(5.0, 1.5) )
+        wait(24 * lognormal(5.0, 1.5) )
         next(Recovered)
     }
 
