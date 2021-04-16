@@ -1,3 +1,5 @@
+:github_url: https://github.com/Epistemix-com/FRED-tutorials
+
 FRED Language Tutorials
 =======================
 
