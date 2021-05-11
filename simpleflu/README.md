@@ -130,7 +130,7 @@ The results are consistent with the INFLUENZA condition propagating through the 
 This tutorial introduces two concepts:
 
 - a **condition** with **states** that can be transmitted between agents.
-- a **meta agent** that introduces the condotion to the population.
+- a **meta agent** that introduces the condition to the population.
 
 Within the states in `INFLUENZA`, we also used:
 
