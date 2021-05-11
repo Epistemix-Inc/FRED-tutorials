@@ -1,28 +1,23 @@
 # Simple Flu
 
-This example introduces the **Simple Flu** model, which is a standalone model of flu infection and the basis for the `../flu-with-behavior`, `../school-closure`, and `../vaccine` tutorials.
+This example introduces the **Simple Flu** model, a standalone model for influenza and the basis for the `../flu-with-behavior`, `../school-closure`, and `../vaccine` tutorials.
+
 
 ## Introduction
 
-This model defines a condition, `INFLUENZA`, which agents can contract via either the meta agent (to create initial infections) or other agents.
-Having contracted the condition, agents either do or do not develop symptoms and then recover, at which point they are immune
-and can no longer contract `INFLUENZA`.
+This model defines a condition, `INFLUENZA`, which agents can contract either via the meta agent (a source of initial infections) or interaction with other agents. Having contracted the condition, agents may develop symptoms or remain astmptomatic before recovering, at which point they are immune and can no longer contract `INFLUENZA`.
+
 
 ## Review of code implementing the model
 
-The code that implements the **Simple Flu** model is contained in two `.fred` files:
+The code that implements the **Simple Flu** model is contained in two **`.fred`** files:
 
-- `main.fred`
-- `simpleflu.fred`
+- **`main.fred`**
+- **`simpleflu.fred`**
 
 ### main.fred
 
-This file does not contribute to the model of flu contagion -- that model is entirely defined in `simpleflu.fred`.
-Instead, the `main.fred` file defines the location and time period of a particular run of simulations and imports the FRED model that defines the `INFLUENZA` condition.
-
-The `simulation` block handles the first part of this.
-This block is required in FRED programs to define what location and time period will be simulated.
-This instance also specifies that weekly outputs will be generated with `weekly_data = 1`.
+The **`main.fred`** file organizes the model and specifies the location and time period to be simulated. The `simulation` block handles the latter part of this. Such a block is required in all FRED programs to define the simulated location and time period. In this instance, we also specify that weekly outputs will be generated with the statement `weekly_data = 1`.
 
 ```fred
 simulation {
@@ -33,14 +28,11 @@ simulation {
 }
 ```
 
-The only additional content in this file is the line `include simpleflu.fred`, which imports the `INFLUENZA` condition and associated states from `simpleflu.fred`.
+The only additional content in this file is the line `include simpleflu.fred`, which inserts the contents of **`simpleflu.fred`**.  This has the effect of adding the `INFLUENZA` condition to our model.  Multiple `include` statements can added when building a complex model.
 
 ### simpleflu.fred
 
-This file defines the `INFLUENZA` condition through a series of states.
-`INFLUENZA` is a condition that can be passed by coming into contact with other agents (`transmission_mode = proximity`).
-Agents all begin in the `Susceptible` state (`start_state = Susceptible`), where they have their susceptibility set to 1 and wait indefinitely to be `exposed`.
-Exposure, either via the meta agent or another agent, moves a given agent to the `Exposed` state (`exposed_state = Exposed`).
+This file defines the `INFLUENZA` condition. `INFLUENZA` is a condition that can be passed by coming into contact with other agents.  This type of transmission is sepcified by the statement `transmission_mode = proximity`. Agents all begin in the `Susceptible` state (`start_state = Susceptible`), where their susceptibility to the condition is set to 1.  Agents wait in this state indefinitely. Exposure, either via the meta agent or another transmissible agent, moves an agent to the `Exposed` state (`exposed_state = Exposed`).  It is not required that the state agents move to after exposure be called "Exposed" as it is in this case.
 
 ```fred
 condition INFLUENZA {
@@ -57,10 +49,7 @@ condition INFLUENZA {
     }
 ```
 
-Once in `Exposed`, an agent loses its susceptibility to `INFLUENZA`.
-The agent then waits through an incubation period and either moves to a symptomatic infection state (`InfectiousSymptomatic`) with a probability of 0.33 or moves to an asymptomatic infectious state (`InfectiousAsymptomatic`) with a probability of 0.67.
-Explicitly defining transition probabilities is one way of introducing stochastic behavior into the model.
-Another way is to draw values from a probability distribution, demonstrated by defining the incubation period for each agent as a sample from a `lognormal` distribution
+Once in the `Exposed` state, an agent loses susceptibility to `INFLUENZA`. The agent then waits through an incubation period and either moves to a symptomatic and infectious state, `InfectiousSymptomatic`, with a probability of 0.33 or to an asymptomatic and infectious state, `InfectiousAsymptomatic`, with a probability of 0.67. Explicitly defining transition probabilities is one way of introducing stochastic behavior into the model. Another way is to draw values from a probability distribution, demonstrated by setting the incubation period for each agent as a sample from a `lognormal()` distribution
 
 ```fred
     state Exposed {
@@ -71,9 +60,8 @@ Another way is to draw values from a probability distribution, demonstrated by d
     }
 ```
 
-Both infectious states are identical with the exception of their transmissibility.
-Once entering one of the infectious states after the wait period in `Exposed`, agents gain a non-zero transmissibility and wait through an infectious period before recovering.
-Asymptomatic infections are half as transmissible as infectious ones, according to this model.
+Both infectious states are identical with the exception of the effect on transmissibility.
+Once entering one of the infectious states after the wait period in `Exposed`, agents gain a non-zero transmissibility and wait through an infectious period before recovering. In this model, asymptomatic infections are set to be half as transmissible as infectious ones. In one of these states agents may transmit the condition to another susceptible agent. 
 
 ```fred
     state InfectiousSymptomatic {
@@ -83,8 +71,8 @@ Asymptomatic infections are half as transmissible as infectious ones, according 
     }
 ```
 
-Once the infectious period is over, agents move to the `Recovered` condition.
-This condition reduces transmissibility of `INFLUENZA` to zero and continues indefinitely.
+Once the infectious period is over, agents move to the `Recovered` state.
+This state reduces transmissibility of `INFLUENZA` for an agent to zero indefinitely.
 
 ```fred
     state Recovered {
@@ -94,8 +82,7 @@ This condition reduces transmissibility of `INFLUENZA` to zero and continues ind
     }
 ```
 
-The only remaining state in `simpleflu.fred` is the `Import` condition, which is the starting state for the meta agent, due to the statement `meta_start_state = Import` at the start of the condition.
-This state prompts the meta agent to infect ten random agents and then wait indefinitely.
+The only remaining state in `INFLUENZA` is the `Import` state, which is the starting state for the meta agent.  This is specified by the `meta_start_state = Import` statement at the top of the condition. This state prompts the meta agent to infect ten random agents at the beginning of the simulation before waiting indefinitely.
 
 ```fred
     state Import {
@@ -105,22 +92,48 @@ This state prompts the meta agent to infect ten random agents and then wait inde
     }
 ```
 
+
 ## Sample Model Outputs
 
-This model can be run using the `METHODS` file, which is a `bash` script that runs the models and then uses `fred_plot` to generate a histogram of new infections per day (and week, not shown).
-This is consistent with the condition propagating through the specified population and creating enough `Recovered` individuals that the condition can no longer transmit.
+This model can be run using the **`METHODS`** file, which is a `bash` script that runs the model and uses `fred_plot` to generate a histogram of the number of new infections per day (and week, not shown).
+
+```bash
+$ ./METHODS
+
+fred_job: starting job simpleflu at <date>
+
+fred_compile -p main.fred
+No errors found.
+No warnings.
+
+fred_job: running job simpleflu id 833 run 1 ...
+fred_job: running job simpleflu id 833 run 2 ...
+run_set 0 completed at <date>
+
+fred_job: running job simpleflu id 833 run 3 ...
+fred_job: running job simpleflu id 833 run 4 ...
+run_set 1 completed at <date>
+
+fred_job: finished job simpleflu <job key> at <date>
+
+fred_plot: image_file = daily.pdf
+fred_plot: image_file = weekly.pdf
+```
+
+The results are consistent with the INFLUENZA condition propagating through the specified population, resulting in agents moving to the `Recovered` state. Eventually, a large fraction of the population is immune and the condition can no longer transmit.
 
 ![New exposures per day](figures/daily.png)
+
 
 ## Summary
 
 This tutorial introduces two concepts:
 
-- a `CONDITION` with `States` that can be transmitted between agents.
-- a meta agent that introduces the `CONDITION` to the population of agents.
+- a **condition** with **states** that can be transmitted between agents.
+- a **meta agent** that introduces the condition to the population.
 
 Within the states in `INFLUENZA`, we also used:
 
-- `wait`, which causes the agent to pause in a given state
-- `next`, which causes an agent to transition to a new state
-- two forms of probabilistic behavior, using `lognormal` to generate wait times and the combination of `next with prob` and `default` to probabilistically assign an agent to symptomatic or asymptomatic infectiousness.
+- `wait()`, which causes the agent to pause in a given state
+- `next()`, which causes an agent to transition to a new state
+- two forms of probabilistic behavior, using `lognormal()` to generate wait times and the combination of `next() with prob()` and `default()` to probabilistically transition an agent to symptomatic or asymptomatic infectious states.
