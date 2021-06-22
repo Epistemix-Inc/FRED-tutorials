@@ -18,5 +18,3 @@ discusses the tutorials provided for the FRED Modeling Language\ |trade| to prov
    Flu with School Closure <school-closure/README>
    Flu with Vaccine <vaccine/README>
 
-
-.. |trade| unicode:: U+2122 .. TRADEMARK SIGN

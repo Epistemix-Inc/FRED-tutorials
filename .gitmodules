@@ -1,0 +1,3 @@
+[submodule "doc-shared"]
+	path = doc-shared
+	url = git@github.com:Epistemix-com/doc-shared.git
