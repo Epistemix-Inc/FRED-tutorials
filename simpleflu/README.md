@@ -5,7 +5,7 @@ This example introduces the **Simple Flu** model, a standalone model for influen
 
 ## Introduction
 
-This model defines a condition, `INFLUENZA`, which agents can contract either via the meta agent (a source of initial infections) or interaction with other agents. Having contracted the condition, agents may develop symptoms or remain astmptomatic before recovering, at which point they are immune and can no longer contract `INFLUENZA`.
+This model defines a condition, `INFLUENZA`, which agents can contract either via the meta agent (a source of initial infections) or interaction with other agents. Having contracted the condition, agents may develop symptoms or remain asymptomatic before recovering, at which point they are immune and can no longer contract `INFLUENZA`.
 
 
 ## Review of code implementing the model
@@ -21,7 +21,7 @@ The **`main.fred`** file organizes the model and specifies the location and time
 
 ```fred
 simulation {
-    locations = Jefferson_County_PA 
+    locations = Jefferson_County_PA
     start_date = 2020-Jan-01
     end_date = 2020-May-01
     weekly_data = 1
@@ -32,7 +32,7 @@ The only additional content in this file is the line `include simpleflu.fred`, w
 
 ### simpleflu.fred
 
-This file defines the `INFLUENZA` condition. `INFLUENZA` is a condition that can be passed by coming into contact with other agents.  This type of transmission is sepcified by the statement `transmission_mode = proximity`. Agents all begin in the `Susceptible` state (`start_state = Susceptible`), where their susceptibility to the condition is set to 1.  Agents wait in this state indefinitely. Exposure, either via the meta agent or another transmissible agent, moves an agent to the `Exposed` state (`exposed_state = Exposed`).  It is not required that the state agents move to after exposure be called "Exposed" as it is in this case.
+This file defines the `INFLUENZA` condition. `INFLUENZA` is a condition that can be passed by coming into contact with other agents.  This type of transmission is specified by the statement `transmission_mode = proximity`. Agents all begin in the `Susceptible` state (`start_state = Susceptible`), where their susceptibility to the condition is set to 1.  Agents wait in this state indefinitely. Exposure, either via the meta agent or another transmissible agent, moves an agent to the `Exposed` state (`exposed_state = Exposed`).  It is not required that the state agents move to after exposure be called "Exposed" as it is in this case.
 
 ```fred
 condition INFLUENZA {
@@ -61,7 +61,7 @@ Once in the `Exposed` state, an agent loses susceptibility to `INFLUENZA`. The a
 ```
 
 Both infectious states are identical with the exception of the effect on transmissibility.
-Once entering one of the infectious states after the wait period in `Exposed`, agents gain a non-zero transmissibility and wait through an infectious period before recovering. In this model, asymptomatic infections are set to be half as transmissible as infectious ones. In one of these states agents may transmit the condition to another susceptible agent. 
+Once entering one of the infectious states after the wait period in `Exposed`, agents gain a non-zero transmissibility and wait through an infectious period before recovering. In this model, asymptomatic infections are set to be half as transmissible as infectious ones. In one of these states agents may transmit the condition to another susceptible agent.
 
 ```fred
     state InfectiousSymptomatic {
