@@ -132,16 +132,23 @@ for the local policy.
 Modifying Closure Variables
 ---------------------------
 
-Variables are modified via the ``METHODS`` script which overwrites
-various combinations the ``school_closure_policy``, ``days_closed``,
-``global_closure_trigger``, and ``local_closure_trigger`` variables into
-the ``parameters.fred`` file to test and plot various scenarios seen
-below. Note that unless stated otherwise, the variables in the
-simulation represented below are:
+FRED variables are modified in the :filename:`METHODS` script for this model,
+which overwrites various combinations the ``school_closure_policy``,
+``days_closed``, ``global_closure_trigger``, and ``local_closure_trigger`` variables.
+For each combination of interest, the changes are written into the
+``parameters.fred`` file and then ``fred_job`` is called to execute the model
+with the modified parameters. This produces a
+range of results as captured in the following figures.
+
+In each figure, the modified variable values are shown in the legend for
+the figure. The other variables not represented in a figure use the
+following default values:
 
 -  ``global_closure_trigger = 1000``
+
 -  ``local_closure_trigger = 20``
--  ``days_closed = 28``.
+
+-  ``days_closed = 28``
 
 Changing the ``global_closure_trigger`` Variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

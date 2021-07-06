@@ -135,32 +135,35 @@ This is an example of modifying the state rules of a State that is assumed to ha
 
 ### Running the model
 
-Here we demonstrate how to run the model described above, and explore three use cases showing how the model can be used to help address policy questions. Note that these instructions assume that you are running the model with a local FRED installation such as that obtained by following the [installation instructions in the FRED Guide](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/install.html#installing-fred-from-source). If you are running FRED using another method (from inside a Docker image, for example) you may need to modify these instructions accordingly.
+Here we demonstrate how to run the model described above, and explore three use cases showing how the model can be used to help address policy questions. Note that these instructions assume that you have configured your environment
+as described in the
+[FRED Local Guide ](https://docs.epistemix.com/projects/fred-local), with FRED
+running in a Docker container.
 
-To run the Flu with Behavior model, open a terminal and navigate to the directory where the Flu with Behavior model is saved, for example:
+To run the Flu with Behavior model, run the FRED Local image and directly
+access the shell as describe in the [Direct Shell Access](https://docs.epistemix.com/projects/fred-local/en/latest/chapter2.html#direct-shell-access)
+section of the guide. The examples here assume you are running on a Linux or
+macOS system. These can be adapted to run on Windows as described in the guide.
+open a terminal and navigate to the directory where the Flu with Behavior model is saved, for example:
 
 ```bash
-cd ~/models/flu-with-behavior
+$ docker exec -it fred /bin/bash
+root@a48b40b88a53:/fred/models# pwd
+/fred/models
+root@a48b40b88a53:/fred/models# cd FRED-tutorials/flu-with-behavior
+root@a48b40b88a53:/fred/models/FRED-tutorials/flu-with-behavior# 
 ```
 
-Ensure that the shell environment variables `$FRED_HOME` and `$FRED_DATA` are set to appropriate values, e.g.
-
-```bash
-$ echo $FRED_HOME
-/home/$USER/Projects/FRED-dev
-$ echo $FRED_DATA
-/home/$USER/Projects/FRED-data
-```
-
-These variables provide the model run script with details of where to find the necessary FRED executables and data specifying the synthetic population.
+The configuration, as described in the FRED Local Guide, ensures that the
+FRED environment variables and command-line tools are accessible.
 
 We can now run the model with default settings and generate some visualizations of its outputs using the `./METHODS` script provided with the model files:
 
 ```bash
-./METHODS
+root@a48b40b88a53:/fred/models/FRED-tutorials/flu-with-behavior# ./METHODS
 ```
 
-This generates the file `flatten.pdf` which contains a plot showing two time series that enable use to compare the number of individuals exposed to influenza under two different modeling **scenarios**: one with `NoDistancing` (the original Simple Flu model), and one with `Distancing` (the Flu with Behavior model).
+This generates the file `flatten.pdf` which contains a plot showing two time series that enable us to compare the number of individuals exposed to influenza under two different modeling **scenarios**: one with `NoDistancing` (the original Simple Flu model), and one with `Distancing` (the Flu with Behavior model).
 
 ![Time series of exposed individuals with and without distancing behavior](img/flatten-methods.png "Default model output from the ./METHODS script")
 
@@ -199,6 +202,10 @@ include parameters.fred
 
 We can now create a script that performs a [parameter sweep](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/user_guide/chapter19/chapter19.html#chapter-19-running-parameter-sweeps), in which the model is run multiple times with each run using a different value for `prob_symp_stay_home`. This script could be written in any scripting language of the user's choice. Below we provide an example of such a script written in bash. This runs the model with the probability of agents with symptoms staying home set to 10%, 30%, 50%, and 70%. The script then plots a time series of the number of exposed individuals for each of these parameter values.
 
+Note that this script can be created outside of the FRED Local Docker
+environment, and will still be available within the mounted `models` directory
+in the container.
+
 ```bash
 #! /usr/bin/env bash
 
@@ -231,7 +238,10 @@ fred_plot -o prob-stay-home -k $KEY_LIST \
     -l $PARAM_LIST
 ```
 
-Call this script `prob-stay-home-sweep.sh` and execute it. This should produce a file called `prob-stay-home.pdf` that looks similar to the plot below
+Execute this script `prob-stay-home-sweep.sh` within the Docker environment.
+This should produce a file called `prob-stay-home.pdf`. Due to the stochastic
+nature of the simulation, your results should look similar but not exactly
+the same as the following chart.
 
 ![Time series of exposed individuals with different probabilities symptomatic individuals decide to stay home](img/prob-stay-home.png "Probability of staying home parameter sweep")
 
@@ -252,7 +262,7 @@ state INFLUENZA.InfectiousSymptomatic {
 Create a copy of `stayhome.fred` called `workers-stayhome.fred`
 
 ```bash
-cp stayhome.fred workers-stayhome.fred
+$ cp stayhome.fred workers-stayhome.fred
 ```
 
 Modify the actions in the `STAY_HOME.Yes` state  in `workers-stayhome.fred` so that agents are present at `School` as well as their `Household`
@@ -275,7 +285,7 @@ condition STAY_HOME {
 Create a new `main.fred` that includes `workers-stayhome.fred` rather than the original `stayhome.fred`
 
 ```bash
-cp main.fred main-workers-stayhome.fred
+$ cp main.fred main-workers-stayhome.fred
 ```
 
 Modify `main-workers-stayhome.fred` so it includes `workers-stayhome.fred` instead of `stayhome.fred`
@@ -298,12 +308,12 @@ fred_job -k flu-with-behavior -p main.fred -n 4 -m 2
 fred_job -k workers-stayhome -p main-workers-stayhome.fred -n 4 -m 2
 
 fred_plot -o workers-stayhome -k flu-with-behavior,workers-stayhome, \
-	  -v INFLUENZA.newExposed,INFLUENZA.newExposed \
-	  -t "Workers stay home but students go to school"  \
-	  -l AllStayHome,WorkersStayHome, --clean
+    -v INFLUENZA.newExposed,INFLUENZA.newExposed \
+    -t "Workers stay home but students go to school"  \
+    -l AllStayHome,WorkersStayHome, --clean
 ```
 
-Running this script produces the following output
+Running this script in Docker produces output similar to the following.
 
 ![Time series of exposed individuals with and without students staying home](img/workers-stayhome.png "Effect of students staying home or not")
 
@@ -316,7 +326,7 @@ Here we consider the case where agents are allowed to stay home from school when
 Create a copy of `stayhome.fred` called `students-stayhome.fred`
 
 ```bash
-cp stayhome.fred students-stayhome.fred
+$ cp stayhome.fred students-stayhome.fred
 ```
 
 Modify the actions in the `STAY_HOME.Yes` state  in `students-stayhome.fred` so that agents are present at `Workplace` as well as their `Household`

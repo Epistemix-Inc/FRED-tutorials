@@ -169,10 +169,12 @@ The `METHODS` file in this directory defines two different FRED jobs by sequenti
 
 ## Sample Model Outputs
 
-This model is run using the `METHODS` file.
+This model is run using the `METHODS` file in a
+[FRED Local](https://docs.epistemix.com/projects/fred-local) container.
 Running this file produces two sets of outputs that differ only in the proportion of the population that is originally vaccinated, 0% or 30%.
 Ideally, there would be a testing step in development to make sure that vaccines are being transmitted and imparting immunity (or reducing susceptibility) in the way that is expected.
-We can see that initially vaccinating 30% of the population reduces the cumulative infections substantially, providing evidence the `INFLUENZA_VACCINE` condition is functioning as expected.
+We can see that initially vaccinating 30% of the population reduces the cumulative infections substantially, providing evidence that
+the `INFLUENZA_VACCINE` condition is functioning as expected.
 
 ![Cumulative cases over time](figures/vaccine-tot.png)
 

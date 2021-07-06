@@ -95,10 +95,15 @@ The only remaining state in `INFLUENZA` is the `Import` state, which is the star
 
 ## Sample Model Outputs
 
-This model can be run using the **`METHODS`** file, which is a `bash` script that runs the model and uses `fred_plot` to generate a histogram of the number of new infections per day (and week, not shown).
+This model can be run using the FRED Local product. As discussed in
+the [FRED Local Guide](https://docs.epistemix.com/projects/fred-local/en/latest/chapter2.html#direct-shell-access), you can gain direct shell access to the
+FRED Local Container and then use the **`METHODS`** file to
+execute the model.  The **`METHODS`** file is a `bash` script that runs the
+model, using `fred_plot` to generate a histogram of the number of new infections per day (and week, which is not shown).
 
 ```bash
-$ ./METHODS
+$ docker exec -it fred /bin/bash
+root@a48b40b88a53:/fred/models# ./METHODS
 
 fred_job: starting job simpleflu at <date>
 
@@ -118,6 +123,8 @@ fred_job: finished job simpleflu <job key> at <date>
 
 fred_plot: image_file = daily.pdf
 fred_plot: image_file = weekly.pdf
+
+root@a48b40b88a53:/fred/models# 
 ```
 
 The results are consistent with the INFLUENZA condition propagating through the specified population, resulting in agents moving to the `Recovered` state. Eventually, a large fraction of the population is immune and the condition can no longer transmit.
@@ -129,11 +136,17 @@ The results are consistent with the INFLUENZA condition propagating through the 
 
 This tutorial introduces two concepts:
 
-- a **condition** with **states** that can be transmitted between agents.
-- a **meta agent** that introduces the condition to the population.
+1. a **condition** with **states** that can be transmitted between agents.
+
+2.  a **meta agent** that introduces the condition to the population.
 
 Within the states in `INFLUENZA`, we also used:
 
-- `wait()`, which causes the agent to pause in a given state
-- `next()`, which causes an agent to transition to a new state
-- two forms of probabilistic behavior, using `lognormal()` to generate wait times and the combination of `next() with prob()` and `default()` to probabilistically transition an agent to symptomatic or asymptomatic infectious states.
+* `wait()`, which causes the agent to pause in a given state
+
+* `next()`, which causes an agent to transition to a new state
+
+* two forms of probabilistic behavior, using `lognormal()` to generate wait
+  times and the combination of `next() with prob()` and `default()` to
+  probabilistically transition an agent to symptomatic or asymptomatic
+  infectious states.
