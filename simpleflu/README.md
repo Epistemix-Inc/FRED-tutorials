@@ -129,8 +129,8 @@ root@a48b40b88a53:/fred/models#
 
 The results are consistent with the INFLUENZA condition propagating through the specified population, resulting in agents moving to the `Recovered` state. Eventually, a large fraction of the population is immune and the condition can no longer transmit.
 
-![New exposures per day](figures/daily.png)
-
+![](figures/daily.png)
+<p class="caption"><span class="caption-text">New exposures per day</span></p>
 
 ## Summary
 

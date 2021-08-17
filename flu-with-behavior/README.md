@@ -165,7 +165,9 @@ root@a48b40b88a53:/fred/models/FRED-tutorials/flu-with-behavior# ./METHODS
 
 This generates the file `flatten.pdf` which contains a plot showing two time series that enable us to compare the number of individuals exposed to influenza under two different modeling **scenarios**: one with `NoDistancing` (the original Simple Flu model), and one with `Distancing` (the Flu with Behavior model).
 
-![Time series of exposed individuals with and without distancing behavior](img/flatten-methods.png "Default model output from the ./METHODS script")
+![](img/flatten-methods.png "Default model output from the ./METHODS script")
+<p class="caption"><span class="caption-text">Time series of exposed
+individuals with and without distancing behavior</span></p>
 
 We see that the social distancing behaviors included in the Flu with Behavior model appear to both delay and reduce the magnitude of the peak number of individuals exposed to the virus during the modeled epidemic.
 
@@ -243,7 +245,10 @@ This should produce a file called `prob-stay-home.pdf`. Due to the stochastic
 nature of the simulation, your results should look similar but not exactly
 the same as the following chart.
 
-![Time series of exposed individuals with different probabilities symptomatic individuals decide to stay home](img/prob-stay-home.png "Probability of staying home parameter sweep")
+![](img/prob-stay-home.png "Probability of staying home parameter sweep")
+<p class="caption"><span class="caption-text">Time series of exposed
+individuals with different probabilities symptomatic individuals decide to stay 
+home</span></p>
 
 As we might have expected, increasing the probability that individuals who become symptomatic decide to stay home decreases the number of individuals who are exposed to flu.
 
@@ -315,7 +320,10 @@ fred_plot -o workers-stayhome -k flu-with-behavior,workers-stayhome, \
 
 Running this script in Docker produces output similar to the following.
 
-![Time series of exposed individuals with and without students staying home](img/workers-stayhome.png "Effect of students staying home or not")
+![](img/workers-stayhome.png "Effect of students staying home or not")
+<p class="caption"><span class="caption-text">Time series of exposed
+individuals with and without students staying home</span></p>
+
 
 We see that having only workers stay home and encouraging students to go to school is less effective at reducing the number of people exposed to the flu than if everyone considers staying home when they experience symptoms. Specifically, allowing everyone to stay home if they choose to do so upon becoming symptomatic reduces the number of exposures and delays the peak daily number of exposures compared to if students are forced to attend school.
 
@@ -379,7 +387,9 @@ fred_plot -o students-stayhome -k flu-with-behavior,students-stayhome, \
 
 Running this script produces the following output
 
-![Time series of exposed individuals with and without workers staying home](img/students-stayhome.png "Effect of workers staying home or not")
+![](img/students-stayhome.png "Effect of workers staying home or not")
+<p class="caption"><span class="caption-text">Time series of exposed
+individuals with and without workers staying home</span></p>
 
 Like the scenario where students were forced to attend school but workers could choose to stay home, when students are allowed to stay home but workers must go to work, the number of agents exposed to the flu is higher than if everyone is allowed to stay home. However, unlike in the previous scenario, allowing workers as well as students stay home doesn't appear to cause a delay in the peak daily number of agents exposed to the flu compared to if only students are allowed to stay home.
 

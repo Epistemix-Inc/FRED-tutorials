@@ -176,7 +176,9 @@ Ideally, there would be a testing step in development to make sure that vaccines
 We can see that initially vaccinating 30% of the population reduces the cumulative infections substantially, providing evidence that
 the `INFLUENZA_VACCINE` condition is functioning as expected.
 
-![Cumulative cases over time](figures/vaccine-tot.png)
+![](figures/vaccine-tot.png)
+<p class="caption"><span class="caption-text">Cumulative cases over time</span></p>
+
 
 ## Summary
 
