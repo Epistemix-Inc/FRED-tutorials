@@ -70,7 +70,11 @@ the ``CheckGlobalEpidemic`` state:
 
 This state checks the county flu count against the global threshold,
 ``local_closure_trigger``. If the threshold is reached, then all admins
-go to ``Close`` state. #### Local Flu Closure
+go to ``Close`` state.
+
+
+Local Flu Closure
+^^^^^^^^^^^^^^^^^
 
 The local closure option is selected by setting
 ``school_closure_policy = LOCAL_CLOSURE``. This variable passes admins
