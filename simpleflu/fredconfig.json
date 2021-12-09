@@ -1,0 +1,18 @@
+{
+  "fredVersion": "7.9.0",
+  "population": {
+    "version": "US_2010.v4",
+    "locations": ["Jefferson_County_PA", "42003"]
+  },
+  "workItems": [
+    {
+      "type": "job",
+      "name": "FRED Tutorials simpleflu model",
+      "entryPoint": "./main.fred",
+      "key": "tutorial-simpleflu-run",
+      "startRun": 1,
+      "numberOfRuns": 2,
+      "parallel": 2
+    }
+  ]
+}
