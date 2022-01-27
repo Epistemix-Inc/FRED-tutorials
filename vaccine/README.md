@@ -81,9 +81,9 @@ For the purpose of this tutorial, consider the following code snippet which spec
     }
 ```
 
-Here `INFLUENZA.trans = 1` and `INFLUENZA.trans = 0` are action rules that cause agents entering the `INFLUENZA.InfectiousSymptomatic` state to change their [transmissibility](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/user_guide/chapter15/chapter15.html#the-transmissibility-of-an-agent) of influenza to 1, and agents entering the `INFLUENZA.Recovered` state to change their transmissibility of influenza to 0 (i.e. they are non-infectious).
+Here `INFLUENZA.trans = 1` and `INFLUENZA.trans = 0` are action rules that cause agents entering the `INFLUENZA.InfectiousSymptomatic` state to change their [transmissibility](https://docs.epistemix.com/projects/lang-guide/en/latest/chapter13.html#the-transmissibility-of-an-agent) of influenza to 1, and agents entering the `INFLUENZA.Recovered` state to change their transmissibility of influenza to 0 (i.e. they are non-infectious).
 This change is accomplished by multiplying condition transmissiblity by the agent's transmissibility, but in this case `INFLUENZA` transmissibility is already equal to 1.
-The wait rule `wait(24* lognormal(5.0,1.5))` causes each agent that becomes infectious and symptomatic to remain so for a number of days determined by sampling from a [lognormal distribution](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/user_guide/chapter9/chapter9.html#statistical-distribution-functions) with median=5.0 and dispersion=1.5. Finally the transition rule `next(Recovered)` causes agents to transition, deterministically, to the `Recovered` state once their period of infection has elapsed.
+The wait rule `wait(24* lognormal(5.0,1.5))` causes each agent that becomes infectious and symptomatic to remain so for a number of days determined by sampling from a [lognormal distribution](https://docs.epistemix.com/projects/lang-guide/en/latest/chapter7.html#statistical-distribution-functions) with median=5.0 and dispersion=1.5. Finally the transition rule `next(Recovered)` causes agents to transition, deterministically, to the `Recovered` state once their period of infection has elapsed.
 Once in `Recovered`, transmissibility is set to 0 and the agent waits indefinitely (`wait()`).
 The `next()` transition has no effect, but is required to have any following rule.
 
