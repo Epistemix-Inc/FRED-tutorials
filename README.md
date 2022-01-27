@@ -30,6 +30,7 @@ allows users to explore the use of a vaccine to influence the dynamics of the
 epidemic.
 
 The tutorials occasionally refer to additional documentation in the [FRED
-Guide](https://epistemix-fred-guide.readthedocs-hosted.com/en/latest/). If you
+Guide](https://docs.epistemix.com/projects/lang-guide/en/latest/).
+If you
 don't have access to the guide, and would like to, please contact
 support@epistemix.com.
