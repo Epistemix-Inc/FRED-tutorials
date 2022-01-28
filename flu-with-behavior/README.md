@@ -149,14 +149,10 @@ This is an example of modifying the state rules of a State that is assumed to ha
 
 ### Running the model
 
-<<<<<<< Updated upstream
 Here we demonstrate how to run the model described above, and explore three use cases showing how the model can be used to help address policy questions. Note that these instructions assume that you have configured your environment
 as described in the
 [FRED Local Guide ](https://docs.epistemix.com/projects/fred-local), with FRED
 running in a Docker container.
-=======
-Here we demonstrate how to run the model described above, and explore three use cases showing how the model can be used to help address policy questions. Note that these instructions assume that you are running the model with a local FRED installation such as that obtained by following the [installation instructions in the FRED Installation Guide](https://docs.epistemix.com/projects/fred-local/en/latest/). If you are running FRED using another method (from inside a Docker image, for example) you may need to modify these instructions accordingly.
->>>>>>> Stashed changes
 
 To run the Flu with Behavior model, run the FRED Local image and directly
 access the shell as describe in the [Direct Shell Access](https://docs.epistemix.com/projects/fred-local/en/latest/chapter2.html#direct-shell-access)
