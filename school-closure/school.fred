@@ -1,6 +1,6 @@
 
 place School {
-    has_administrator = 1
+    has_group_agent = 1
 }
 
 variables {
@@ -28,12 +28,13 @@ variables {
 
 
 condition SCHOOL {
-    admin_start_state = Start
+    group_start_state = Start
+    start_state = Start
 
     state Start {
         wait(0)
-        if (admin(School)) then next(CheckEpidemic)
-        if (profile == student) then next(StudentSchoolOpen)
+        if (is_group_agent(School)) then next(CheckEpidemic)
+        if (is_member(School) & age < 18) then next(StudentSchoolOpen)
         default(Excluded)
     }
 
@@ -58,50 +59,52 @@ condition SCHOOL {
 
     state CheckCalendar {
         wait(0)
-        if (date_range(Dec-20,Jan-02)) then next(WinterBreak) 
-        if (date_range(Mar-10,Mar-15)) then next(SpringBreak)
-        if (date_range(Jun-15,Aug-25)) then next(SummerBreak)
+        if (is_date_range(Dec-20,Jan-02)) then next(WinterBreak) 
+        if (is_date_range(Mar-10,Mar-15)) then next(SpringBreak)
+        if (is_date_range(Jun-15,Aug-25)) then next(SummerBreak)
         default(Open)
     }
 
     state Open {
+	    reopen()
         wait(24)
         default(CheckEpidemic)
     }
 
     state Close {
-        close(School)
+        close()
         wait(24*days_closed)
         next(CheckEpidemic)
     }
 
     state WinterBreak {
-        close(School)
+        close()
         wait(until(Jan,03))
         next(CheckEpidemic)
     }
 
     state SpringBreak {
-        close(School)
+        close()
         wait(until(Mar,16))
         next(CheckEpidemic)
     }
 
     state SummerBreak {
-        close(School)
+        close()
         wait(until(Aug,26))
         next(CheckEpidemic)
     }
 
     state StudentSchoolOpen {
         wait(24)
-        if (has_been_closed(School)) then next(StudentSchoolClosed)
+        if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
         default(StudentSchoolOpen)
     }
 
     state StudentSchoolClosed {
+        absent(School)
         wait(24)
-        if (has_been_closed(School)) then next(StudentSchoolClosed)
+        if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
         default(StudentSchoolOpen)
     }
 }
