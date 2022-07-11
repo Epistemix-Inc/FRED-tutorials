@@ -23,11 +23,10 @@ simulation {
     locations = Jefferson_County_PA
     start_date = 2020-Jan-01
     end_date = 2020-May-01
-    weekly_data = 1
 }
 ```
 
-This is the same as the `simulation` code block from the Simple Flu model. It specifies that the model will be used to simulate the behavior of the synthetic population for Jefferson County, PA for the period January 1 2020 to May 1 2020. By default FRED produces simulation outputs quantifying the evolution of the number of agents in each state on a daily basis in the directory `$FRED_HOME/RESULTS/JOB/<job_num>/OUT/<run_num>/DAILY`. Here `job_num` and `run_num` are, respectively, the job and run numbers for the simulations and are determined at runtime. If `weekly_data = 1` is specified, additional datasets are generated in `$FRED_HOME/RESULTS/JOB/<job_num>/OUT/<run_num>/WEEKLY` that correspond to the daily datasets, but aggregated to the [CDC epidemiological ('epi') week](https://wwwn.cdc.gov/nndss/document/MMWR_Week_overview.pdf) level.
+This is the same as the `simulation` code block from the Simple Flu model. It specifies that the model will be used to simulate the behavior of the synthetic population for Jefferson County, PA for the period January 1 2020 to May 1 2020. By default FRED produces simulation outputs quantifying the evolution of the number of agents in each state on a daily basis in the directory `$FRED_HOME/RESULTS/JOB/<job_num>/OUT/<run_num>/DAILY`. Here `job_num` and `run_num` are, respectively, the job and run numbers for the simulations and are determined at runtime. 
 
 The remaining lines in `main.fred` demonstrate the use of [`include` statements](https://docs.epistemix.com/projects/lang-guide/en/latest/chapter14.html#include-files-and-fred-path) to import sub-models.
 
@@ -90,18 +89,42 @@ This file contains the code that implements the social distancing sub-model that
 condition STAY_HOME {
     start_state = No
 
-    state No {}
+    state No {
+        attend()
+		wait()
+		next()
+	}
 
     state Yes {
-        absent()
-        present(Household)
+        skip()
+        attend(Household)
         wait()
         next()
     }
 }
 ```
 
-The empty braces following the declaration of the `No` state causes it to be assigned the [**default configuration**](https://docs.epistemix.com/projects/lang-guide/en/latest/chapter10.html)--agents entering this state perform no actions and remain in this state indefinitely unless influenced by an external factor (including an action rule of a state belonging to a different Condition). It is significant that the `start_state` assigns `No` as the default state for the condition. The configuration of the `Yes` state demonstrates a feature of the FRED language which has not been discussed previously: the [`absent` and `present` actions](https://docs.epistemix.com/projects/lang-guide/en/latest/chapter10.html#actions-on-an-agents-groups). If an agent is **absent** from a group or location, they do not attend that group or location even if they otherwise would. The statement `absent()` causes an agent to avoid _all_ groups or locations. Conversely `present(Household)` causes agents who were previously absent from their household to resume attending their household. The combination of the `absent()` and `present(Household)` actions in the definition of the `STAY_HOME.Yes` state cause agents entering that state to _exclusively_ attend their household (i.e. stay home). Note that the effects of `absent` and `present` actions on an agent only apply while the agent remains in the state in which the actions were specified, and are reset when an agent leaves that state. This is why agents do not need to explicitly re-join their work when they enter the `STAY_HOME.No` state. Finally the `wait()` wait rule and `next()` transition rule cause agents to remain in the `Yes` state indefinitely.
+This condition demonstrates a feature of the FRED language which has not been
+discussed previously: the [`skip` and `attend`
+actions](https://docs.epistemix.com/projects/lang-guide/en/latest/chapter10.html#actions-on-an-agents-groups). If
+an agent **skips** one of its usual places, then they do not attend
+that place even if they otherwise would. The statement
+`skip()` causes an agent to avoid _all_ of its usual places.
+Conversely `attend(Household)` causes agents who were
+previously absent from their household to resume attending their
+household. The combination of the `skip()` and `attend(Household)`
+actions in the definition of the `STAY_HOME.Yes` state cause agents
+entering that state to _exclusively_ attend their household (i.e. stay
+home). Note that the effects of `skip` persist until that agent
+executes an `attend` within this same condition.
+
+All agents start in the `No` state. The `attend()` action causes the
+agent to resume its attendance at the places is usually attendance,
+and cancels any `skip()` action in this condition.  It is significant
+that the `start_state` assigns `No` as the default state for the
+condition.  The `wait()` wait rule and `next()` transition rule cause
+agents to remain in each state indefinitely unless their state is
+changed by another condition.
 
 The remaining code blocks in `stayhome.fred` specify how agents decide to stay at home or not depending on their state with respect to the `INFLUENZA` condition.
 
@@ -198,7 +221,7 @@ To make varying the probability that symptomatic agents decide to stay home easi
 
 ```fred
 variables {
-    global prob_symp_stay_home
+    shared numeric prob_symp_stay_home
     prob_symp_stay_home = 0.5
 }
 ...
@@ -230,7 +253,7 @@ PROBS_STAY_HOME=("0.1" "0.3" "0.5" "0.7")
 for P in ${PROBS_STAY_HOME[@]}
 do
     # Generate parameters.fred file
-    printf "parameters {\nprob_symp_stay_home = ${P}\n}\n" > parameters.fred
+    printf "startup {\nprob_symp_stay_home = ${P}\n}\n" > parameters.fred
 
     # Determine the job name for the run with this parameter
     KEY="stay-home-prob=${P}"
@@ -284,17 +307,22 @@ Create a copy of `stayhome.fred` called `workers-stayhome.fred`
 $ cp stayhome.fred workers-stayhome.fred
 ```
 
-Modify the actions in the `STAY_HOME.Yes` state  in `workers-stayhome.fred` so that agents are present at `School` as well as their `Household`
+Modify the actions in the `STAY_HOME.Yes` state  in `workers-stayhome.fred` so that agents attend `School` as well as their `Household`
 
 ```fred
 condition STAY_HOME {
+    start_state = No
 
-    state No {}
+    state No {
+        attend()
+		wait()
+		next()
+	}
 
     state Yes {
-        absent()
-        present(Household)
-        present(School)
+        skip()
+        attend(Household)
+        attend(School)
         wait()
         next()
     }
@@ -351,17 +379,22 @@ Create a copy of `stayhome.fred` called `students-stayhome.fred`
 $ cp stayhome.fred students-stayhome.fred
 ```
 
-Modify the actions in the `STAY_HOME.Yes` state  in `students-stayhome.fred` so that agents are present at `Workplace` as well as their `Household`
+Modify the actions in the `STAY_HOME.Yes` state  in `students-stayhome.fred` so that agents attend their `Workplace` as well as their `Household`
 
 ```fred
 condition STAY_HOME {
+    start_state = No
 
-    state No {}
+    state No {
+        attend()
+		wait()
+		next()
+	}
 
     state Yes {
-        absent()
-        present(Household)
-        present(Workplace)
+        skip()
+        attend(Household)
+        attend(Workplace)
         wait()
         next()
     }
@@ -413,7 +446,7 @@ Like the scenario where students were forced to attend school but workers could 
 
 In addition to the features of the FRED language used in the Simple Flu model, this model also demonstrates the following features:
 
-- The `absent` and `present` actions are used in `stayhome.fred` to control the Places agents attend, depending on their conditions.
+- The `skip` and `attend` actions are used in `stayhome.fred` to control the Places agents attend, depending on their conditions.
 - State rule shadowing is used in `stayhome.fred` to modify the the rules for a state defined previously in the program.
 - `stayhome.fred` contains an example of a conditional action rule that is only executed if a predicate is true.
 - Use of variables to specify parameters in place of hard-coded data.
