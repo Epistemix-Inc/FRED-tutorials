@@ -4,37 +4,36 @@ place School {
 }
 
 variables {
-    global NO_CLOSURE
+    shared numeric NO_CLOSURE
     NO_CLOSURE = 0
     
-    global LOCAL_CLOSURE
+    shared numeric LOCAL_CLOSURE
     LOCAL_CLOSURE = 1
 
-    global GLOBAL_CLOSURE
+    shared numeric GLOBAL_CLOSURE
     GLOBAL_CLOSURE = 2
 
-    global school_closure_policy
+    shared numeric school_closure_policy
     school_closure_policy = NO_CLOSURE
     
-    global days_closed
-    days_closed = 28
+    shared numeric days_closed
+    days_closed = 7
 
-    global global_closure_trigger
+    shared numeric global_closure_trigger
     global_closure_trigger = 1000
 
-    global local_closure_trigger
+    shared numeric local_closure_trigger
     local_closure_trigger = 20
 }
 
 
 condition SCHOOL {
-    group_start_state = Start
+    group_start_state = Admin_Start
     start_state = Start
 
-    state Start {
+	state Admin_Start {
         wait(0)
         if (is_group_agent(School)) then next(CheckEpidemic)
-        if (is_member(School) & age < 18) then next(StudentSchoolOpen)
         default(Excluded)
     }
 
@@ -47,21 +46,21 @@ condition SCHOOL {
 
     state CheckLocalEpidemic {
         wait(0)
-	    if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
+	    if (local_closure_trigger <= current_count(INF.Is,School)) then next(Close)
         default(CheckCalendar)
     }
 
     state CheckGlobalEpidemic {
         wait(0)
-	    if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
+	    if (global_closure_trigger <= current_count(INF.Is)) then next(Close)
         default(CheckCalendar)
     }
 
     state CheckCalendar {
         wait(0)
-        if (is_date_range(Dec-20,Jan-02)) then next(WinterBreak) 
-        if (is_date_range(Mar-10,Mar-15)) then next(SpringBreak)
-        if (is_date_range(Jun-15,Aug-25)) then next(SummerBreak)
+        if (is_date_in_range(Dec-20,Jan-02)) then next(WinterBreak) 
+        if (is_date_in_range(Mar-10,Mar-15)) then next(SpringBreak)
+        if (is_date_in_range(Jun-15,Aug-25)) then next(SummerBreak)
         default(Open)
     }
 
@@ -95,17 +94,23 @@ condition SCHOOL {
         next(CheckEpidemic)
     }
 
+	state Start {
+	   wait(0)
+	   if (is_member(School) & age < 18) then next(StudentSchoolOpen)
+	   next(Excluded)	   
+	}
+
     state StudentSchoolOpen {
         wait(24)
-        if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
+ 		if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
         default(StudentSchoolOpen)
     }
 
     state StudentSchoolClosed {
-        absent(School)
         wait(24)
-        if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
+ 		if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
         default(StudentSchoolOpen)
     }
+
 }
 
