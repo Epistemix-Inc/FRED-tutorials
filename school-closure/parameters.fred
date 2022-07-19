@@ -1,3 +1,4 @@
-startup {
+parameters {
     school_closure_policy = GLOBAL_CLOSURE
+    days_closed = 56
 }

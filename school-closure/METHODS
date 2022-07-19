@@ -8,7 +8,7 @@ echo 'parameters {' > parameters.fred
 echo '    school_closure_policy = NO_CLOSURE' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k no_closure -p main.fred -n 4 -m 4
+fred_job -k no_closure -p main.fred -n 4 -m 2
 
 ######################################################################### LOCAL CLOSURE
 ########## LOCAL CLOSURE, normal
@@ -19,7 +19,7 @@ echo 'parameters {' > parameters.fred
 echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k local -p main.fred -n 4 -m 4
+fred_job -k local -p main.fred -n 4 -m 2
 
 ######################################################################### GLOBAL CLOSURE
 ########## GLOBAL CLOSURE, normal
@@ -30,7 +30,7 @@ echo 'parameters {' > parameters.fred
 echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k global -p main.fred -n 4 -m 4
+fred_job -k global -p main.fred -n 4 -m 2
 
 ######################################################################### Analysis
 
@@ -68,7 +68,7 @@ echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    local_closure_trigger = 30' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k local_trigger_30 -p main.fred -n 4 -m 4
+fred_job -k local_trigger_30 -p main.fred -n 4 -m 2
 
 ########## LOCAL CLOSURE, local_closure_trigger = 10
 
@@ -79,7 +79,7 @@ echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    local_closure_trigger = 10' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k local_trigger_10 -p main.fred -n 4 -m 4
+fred_job -k local_trigger_10 -p main.fred -n 4 -m 2
 
 ########## LOCAL CLOSURE, days_closed = 14
 
@@ -90,7 +90,7 @@ echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 14' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k local_closed_14 -p main.fred -n 4 -m 4
+fred_job -k local_closed_14 -p main.fred -n 4 -m 2
 
 ########## LOCAL CLOSURE, days_closed = 56
 
@@ -101,7 +101,7 @@ echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 56' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k local_closed_56 -p main.fred -n 4 -m 4
+fred_job -k local_closed_56 -p main.fred -n 4 -m 2
 
 ########## GLOBAL CLOSURE, global_closure_trigger = 1500
 
@@ -112,7 +112,7 @@ echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    global_closure_trigger = 1500' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k global_trigger_1500 -p main.fred -n 4 -m 4
+fred_job -k global_trigger_1500 -p main.fred -n 4 -m 2
 
 ########## GLOBAL CLOSURE, global_closure_trigger = 500
 
@@ -123,7 +123,7 @@ echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    global_closure_trigger = 500' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k global_trigger_500 -p main.fred -n 4 -m 4
+fred_job -k global_trigger_500 -p main.fred -n 4 -m 2
 
 ########## GLOBAL CLOSURE, days_closed = 14
 
@@ -134,7 +134,7 @@ echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 14' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k global_closed_14 -p main.fred -n 4 -m 4
+fred_job -k global_closed_14 -p main.fred -n 4 -m 2
 
 ########## GLOBAL CLOSURE, days_closed = 56
 
@@ -145,7 +145,7 @@ echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 56' >> parameters.fred
 echo '}' >> parameters.fred
 
-fred_job -k global_closed_56 -p main.fred -n 4 -m 4
+fred_job -k global_closed_56 -p main.fred -n 4 -m 2
 
 ######################################################################### Analysis
 

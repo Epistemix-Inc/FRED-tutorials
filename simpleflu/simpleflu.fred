@@ -46,7 +46,7 @@ condition INFLUENZA {
     }
 
     state Import {
-        import_exposures(INFLUENZA,10)
+        import(10)
         wait()
         next()
     }
