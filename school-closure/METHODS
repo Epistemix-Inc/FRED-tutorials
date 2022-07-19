@@ -4,18 +4,23 @@
 
 fred_delete -f -k no_closure
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = NO_CLOSURE' >> parameters.fred
 echo '}' >> parameters.fred
 
 fred_job -k no_closure -p main.fred -n 4 -m 2
+
+# fred_plot -o closed -t "Number of Schools Closed" \
+# 	  -k no_closure \
+# 	  -v SCHOOL.Open,SCHOOL.Close,SCHOOL.SpringBreak,SCHOOL.SummerBreak,SCHOOL.WinterBreak \
+# 	  --ylabel "Schools" -M --year --leg out -d 0 --clean --xlabel "Date"
 
 ######################################################################### LOCAL CLOSURE
 ########## LOCAL CLOSURE, normal
 
 fred_delete -f -k local
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '}' >> parameters.fred
 
@@ -26,7 +31,7 @@ fred_job -k local -p main.fred -n 4 -m 2
 
 fred_delete -f -k global
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '}' >> parameters.fred
 
@@ -58,12 +63,16 @@ fred_plot -o students -t "Number of Students out of School" \
 	  -l 'Local','Global','No Closure' \
 	  --ylabel "Students" -M --year -d 0 --clean --xlabel "Date" --legend out
 
+convert closed.pdf figures/closed.png
+convert tot.pdf figures/tot.png
+convert inc.pdf figures/inc.png
+convert students.pdf figures/students.png
 
 ########## LOCAL CLOSURE, local_closure_trigger = 30
 
 fred_delete -f -k local_trigger_30
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    local_closure_trigger = 30' >> parameters.fred
 echo '}' >> parameters.fred
@@ -74,7 +83,7 @@ fred_job -k local_trigger_30 -p main.fred -n 4 -m 2
 
 fred_delete -f -k local_trigger_10
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    local_closure_trigger = 10' >> parameters.fred
 echo '}' >> parameters.fred
@@ -85,7 +94,7 @@ fred_job -k local_trigger_10 -p main.fred -n 4 -m 2
 
 fred_delete -f -k local_closed_14
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 14' >> parameters.fred
 echo '}' >> parameters.fred
@@ -96,7 +105,7 @@ fred_job -k local_closed_14 -p main.fred -n 4 -m 2
 
 fred_delete -f -k local_closed_56
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = LOCAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 56' >> parameters.fred
 echo '}' >> parameters.fred
@@ -107,7 +116,7 @@ fred_job -k local_closed_56 -p main.fred -n 4 -m 2
 
 fred_delete -f -k global_trigger_1500
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    global_closure_trigger = 1500' >> parameters.fred
 echo '}' >> parameters.fred
@@ -118,7 +127,7 @@ fred_job -k global_trigger_1500 -p main.fred -n 4 -m 2
 
 fred_delete -f -k global_trigger_500
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    global_closure_trigger = 500' >> parameters.fred
 echo '}' >> parameters.fred
@@ -129,7 +138,7 @@ fred_job -k global_trigger_500 -p main.fred -n 4 -m 2
 
 fred_delete -f -k global_closed_14
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 14' >> parameters.fred
 echo '}' >> parameters.fred
@@ -140,7 +149,7 @@ fred_job -k global_closed_14 -p main.fred -n 4 -m 2
 
 fred_delete -f -k global_closed_56
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    school_closure_policy = GLOBAL_CLOSURE' >> parameters.fred
 echo '    days_closed = 56' >> parameters.fred
 echo '}' >> parameters.fred
@@ -173,6 +182,11 @@ fred_plot -o students -t "Number of Students out of School" \
 	  -l 'Local','Global','No Closure' \
 	  --ylabel "Students" -M --year -d 0 --clean --xlabel "Date" --legend out
 
+convert closed.pdf figures/closed.png
+convert tot.pdf figures/tot.png
+convert inc.pdf figures/inc.png
+convert students.pdf figures/students.png
+
 
 
 ################## Total Cases
@@ -202,6 +216,11 @@ fred_plot -o local_days_closed_tot -t "Local Closure Total Infected" \
 	  -n -s 100 -M --year -d 0 --clean --leg bottom --xlabel "Date"
 
 
+convert local_trigs_tot.pdf figures/local_trigs_tot.png
+convert global_trigs_tot.pdf figures/global_trigs_tot.png
+convert global_days_closed_tot.pdf figures/global_days_closed_tot.png
+convert local_days_closed_tot.pdf figures/local_days_closed_tot.png
+
 ################## New Cases
 
 
@@ -228,3 +247,9 @@ fred_plot -o local_days_closed_new -t "Local Closure New Infected" \
 	  -v INF.newE,INF.newE,INF.newE \
 	  -l 'days_closed = 14','days_closed = 28','days_closed = 56' \
 	  -n -s 100 -M --year -d 0 --clean --leg top --xlabel "Date"
+
+convert local_trigs_new.pdf figures/local_trigs_new.png
+convert global_trigs_new.pdf figures/global_trigs_new.png
+convert global_days_closed_new.pdf figures/global_days_closed_new.png
+convert local_days_closed_new.pdf figures/local_days_closed_new.png
+
