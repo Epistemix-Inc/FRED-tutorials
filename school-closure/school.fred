@@ -47,13 +47,13 @@ condition SCHOOL {
 
     state CheckLocalEpidemic {
         wait(0)
-	    if (local_closure_trigger <= current_count(INF.Is,School)) then next(Close)
+	    if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
         default(CheckCalendar)
     }
 
     state CheckGlobalEpidemic {
         wait(0)
-	    if (global_closure_trigger <= current_count(INF.Is)) then next(Close)
+	    if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
         default(CheckCalendar)
     }
 
@@ -102,7 +102,7 @@ condition SCHOOL {
     }
 
     state StudentSchoolClosed {
-        absent(Grade,School)
+        absent(School)
         wait(24)
         if (is_temporarily_closed(School)) then next(StudentSchoolClosed)
         default(StudentSchoolOpen)
