@@ -1,7 +1,7 @@
 # MODELING THE EFFECTS OF SCHOOL CLOSURE DURING AN EPIDEMIC
 
 simulation  {
-    locations = Jefferson_County_PA
+    locations = Allegheny_County_PA
     start_date = 2020-08-01
     end_date = 2021-07-31
 }
