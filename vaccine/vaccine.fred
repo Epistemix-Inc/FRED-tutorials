@@ -1,25 +1,27 @@
 
 variables {
-    global vaccine_delay
+    shared numeric vaccine_delay
     vaccine_delay = 0
 
-    global initial_vaccines
+    shared numeric initial_vaccines
     initial_vaccines = 0.1
 
-    global vaccine_effectiveness
+    shared numeric vaccine_effectiveness
     vaccine_effectiveness = 0.8
 
-    global days_until_effective
+    shared numeric days_until_effective
     days_until_effective = 14
 
-    global willing_to_consider
+    shared numeric willing_to_consider
     willing_to_consider = 0.5
 }
 
 
 condition INFLUENZA_VACCINE {
     meta_start_state = ImportStart
+    start_state = Start
     transmission_mode = proximity
+    transmissibility = 1
     exposed_state = Decide
 
     state Start {
@@ -58,12 +60,12 @@ condition INFLUENZA_VACCINE {
     }
 
     state ImportStart {
-        wait(24 * vaccine_delay)
+        wait(24 * vaccine_delay + 1)
         next(ImportVaccine)
     }
 
     state ImportVaccine {
-        import_per_capita(initial_vaccines)
+        import_exposures(INFLUENZA_VACCINE, initial_vaccines*size(Population))
         wait()
         next()
     }

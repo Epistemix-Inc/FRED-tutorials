@@ -2,7 +2,7 @@
 
 fred_delete -f -k novaccine
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    initial_vaccines = 0' >> parameters.fred
 echo '}' >> parameters.fred
 
@@ -10,7 +10,7 @@ fred_job -k novaccine -p main.fred -n 4 -m 2
 
 fred_delete -f -k vaccine
 
-echo 'parameters {' > parameters.fred
+echo 'startup {' > parameters.fred
 echo '    initial_vaccines = 0.3' >> parameters.fred
 echo '}' >> parameters.fred
 
@@ -23,3 +23,6 @@ fred_plot -o vaccine-inc -k novaccine,vaccine -v INFLUENZA.newExposed,INFLUENZA.
 fred_plot -o vaccine-tot -k novaccine,vaccine -v INFLUENZA.totExposed,INFLUENZA.totExposed \
 	  -t "Effect of Vaccine"  \
 	  -l NoVaccine,Vaccine -d 0 --clean -M
+
+convert vaccine-inc.pdf figures/vaccine-inc.png
+convert vaccine-tot.pdf figures/vaccine-tot.png

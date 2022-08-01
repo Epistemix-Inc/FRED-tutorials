@@ -17,14 +17,13 @@ The code that implements the **Simple Flu** model is contained in two **`.fred`*
 
 ### main.fred
 
-The **`main.fred`** file organizes the model and specifies the location and time period to be simulated. The `simulation` block handles the latter part of this. Such a block is required in all FRED programs to define the simulated location and time period. In this instance, we also specify that weekly outputs will be generated with the statement `weekly_data = 1`.
+The **`main.fred`** file organizes the model and specifies the location and time period to be simulated. The `simulation` block handles the latter part of this. Such a block is required in all FRED programs to define the simulated location and time period.
 
 ```fred
 simulation {
     locations = Jefferson_County_PA
     start_date = 2020-Jan-01
     end_date = 2020-May-01
-    weekly_data = 1
 }
 ```
 
@@ -32,9 +31,13 @@ The only additional content in this file is the line `include simpleflu.fred`, w
 
 ### simpleflu.fred
 
-This file defines the `INFLUENZA` condition. `INFLUENZA` is a condition that can be passed by coming into contact with other agents.  This type of transmission is specified by the statement `transmission_mode = proximity`. Agents all begin in the `Susceptible` state (`start_state = Susceptible`), where their susceptibility to the condition is set to 1.  Agents wait in this state indefinitely. Exposure, either via the meta agent or another transmissible agent, moves an agent to the `Exposed` state (`exposed_state = Exposed`).  It is not required that the state agents move to after exposure be called "Exposed" as it is in this case.
+This file defines the `INFLUENZA` condition. `INFLUENZA` is a condition that can be passed by coming into contact with other agents.  This type of transmission is specified by the statement `transmission_mode = proximity`. At the start of the run, all agents are assigned a susceptibility of 1.0 in the `agent_startup` block via the statement `INFLUENZA.sus = 1`. All agents begin in the `Susceptible` state (`start_state = Susceptible`). Agents wait in this state indefinitely. Exposure, either via the meta agent or another transmissible agent, moves an agent to the `Exposed` state (`exposed_state = Exposed`).  It is not required that the state agents move to after exposure be called "Exposed" as it is in this case.
 
 ```fred
+agent_startup {
+    INFLUENZA.sus = 1
+}
+
 condition INFLUENZA {
     transmission_mode = proximity
     transmissibility = 1.0
@@ -86,7 +89,7 @@ The only remaining state in `INFLUENZA` is the `Import` state, which is the star
 
 ```fred
     state Import {
-        import_count(10)
+        import(10)
         wait()
         next()
     }
@@ -99,7 +102,7 @@ This model can be run using the FRED Local product. As discussed in
 the [FRED Local Guide](https://docs.epistemix.com/projects/fred-local/en/latest/chapter2.html#direct-shell-access), you can gain direct shell access to the
 FRED Local Container and then use the **`METHODS`** file to
 execute the model.  The **`METHODS`** file is a `bash` script that runs the
-model, using `fred_plot` to generate a histogram of the number of new infections per day (and week, which is not shown).
+model, using `fred_plot` to generate a histogram of the number of new infections per day.
 
 ```bash
 $ docker exec -it fred /bin/bash
@@ -122,7 +125,6 @@ run_set 1 completed at <date>
 fred_job: finished job simpleflu <job key> at <date>
 
 fred_plot: image_file = daily.pdf
-fred_plot: image_file = weekly.pdf
 
 root@a48b40b88a53:/fred/models# 
 ```

@@ -8,7 +8,7 @@ This model studies the effects of school closures in Jefferson County,
 PA. The ``main.fred`` file includes three components:
 
 -  Influenza condition
--  ``school.fred``: a condition for admins to close the school according
+-  ``school.fred``: a condition for group agents to close the school according
    to case numbers in their school or county as well as normally
    scheduled holiday closure dates. This condition also keeps track of
    students whose schools are closed.
@@ -21,7 +21,7 @@ Normal Closures
 The schools are given a school schedule that closes the schools during
 summer, winter, and spring break. There are states for each break:
 ``WinterBreak``, ``SpringBreak``, and\ ``SummerBreak``. In these states,
-admins close their schools and wait until the end of the break period.
+school administrators (represented by ``group agents``) close their schools and wait until the end of the break period.
 They pass into these states from the ``CheckCalendar`` state:
 
 .. code:: fred
@@ -34,8 +34,8 @@ They pass into these states from the ``CheckCalendar`` state:
            default(Open)
        }
 
-Admins go to the break states by checking the current date with
-``date_range()``. The admins only pass into this check state if their
+Group agents go to the break states by checking the current date with
+``date_range()``. The group agents only pass into this check state if their
 school is not already affected by flu closures. No flu closures will
 take place if ``school_closure_policy`` is set equal to ``NO_CLOSURE``.
 
@@ -57,19 +57,19 @@ The ``GLOBAL_CLOSURE``, ``LOCAL_CLOSURE``, and ``NO_CLOSURE`` variables
 are set to arbitrary but unique integers to get around the inability to
 assign strings to variables. The global closure option is selected by
 setting ``school_closure_policy = GLOBAL_CLOSURE``. This variable passes
-admins from the ``CheckEpidemic`` state in the ``SCHOOL`` condition to
+group agents from the ``CheckEpidemic`` state in the ``SCHOOL`` condition to
 the ``CheckGlobalEpidemic`` state:
 
 .. code:: fred
 
        state CheckGlobalEpidemic {
            wait(0)
-           if (global_closure_trigger <= current_count_of_INF.Is) then next(Close)
+           if (global_closure_trigger <= current_count(INF.Is)) then next(Close)
            default(CheckCalendar)
        }
 
 This state checks the county flu count against the global threshold,
-``local_closure_trigger``. If the threshold is reached, then all admins
+``local_closure_trigger``. If the threshold is reached, then all group agents
 go to ``Close`` state.
 
 
@@ -77,7 +77,7 @@ Local Flu Closure
 ^^^^^^^^^^^^^^^^^
 
 The local closure option is selected by setting
-``school_closure_policy = LOCAL_CLOSURE``. This variable passes admins
+``school_closure_policy = LOCAL_CLOSURE``. This variable passes group agents
 from the ``CheckEpidemic`` state in the ``SCHOOL`` condition to the
 ``CheckLocalEpidemic`` state:
 
@@ -85,7 +85,7 @@ from the ``CheckEpidemic`` state in the ``SCHOOL`` condition to the
 
        state CheckLocalEpidemic {
            wait(0)
-           if (local_closure_trigger <= current_count_of_INF.Is_in_School) then next(Close)
+           if (local_closure_trigger <= current_count(INF.Is, School)) then next(Close)
            default(CheckCalendar)
        }
 
@@ -102,9 +102,9 @@ The ``StudentSchoolOpen`` and ``StudentSchoolOpen`` states are included
 in the ``SCHOOL`` condition to keep track of how many students have
 their school closed/open over the course of time. Students are filtered
 into ``StudentSchoolOpen`` from the ``Start`` state with the conditional
-``if (profile == student)``. The students then switch between the two
+``if (is_member(School) & age < 18)``. The students then switch between the two
 states by checking if their school has been closed by an admin using the
-``has_been_closed(<group>)`` mixing predicate. ##Results
+``is_temporarily_closed(<group>)`` predicate. ##Results
 
 Plotting Flu Cases
 ~~~~~~~~~~~~~~~~~~

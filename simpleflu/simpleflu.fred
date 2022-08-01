@@ -3,6 +3,11 @@
 # Author: John Grefenstette
 # Date: 22 Jul 2019
 
+agent_startup {
+    INFLUENZA.sus = 1
+}
+
+
 condition INFLUENZA {
     transmission_mode = proximity
     transmissibility = 1.0
@@ -11,7 +16,6 @@ condition INFLUENZA {
     meta_start_state = Import
 
     state Susceptible {
-        INFLUENZA.sus = 1
         wait()
         next()
     }
@@ -42,7 +46,7 @@ condition INFLUENZA {
     }
 
     state Import {
-        import_count(10)
+        import_exposures(INFLUENZA,10)
         wait()
         next()
     }
