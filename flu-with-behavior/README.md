@@ -91,9 +91,9 @@ condition STAY_HOME {
 
     state No {
         attend()
-		wait()
-		next()
-	}
+        wait()
+        next()
+    }
 
     state Yes {
         skip()
