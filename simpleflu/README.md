@@ -89,7 +89,7 @@ The only remaining state in `INFLUENZA` is the `Import` state, which is the star
 
 ```fred
     state Import {
-        import(10)
+        import_exposures(INFLUENZA,10)
         wait()
         next()
     }
